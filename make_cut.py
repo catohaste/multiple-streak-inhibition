@@ -37,19 +37,19 @@ if not os.path.isdir(save_directory):
 ########################################################################################
 """ Set 'length' parameters """
 
-number_of_cells_precut = 100
-dx = 0.1
-left_post_cut = 35
-right_post_cut = 24
-dt = 0.0001
-sample_rate = 200
+# number_of_cells_precut = 100
+# dx = 0.1
+# left_post_cut = 35
+# right_post_cut = 24
+# dt = 0.0001
+# sample_rate = 200
 
-# number_of_cells_precut = 748
-# dx = 0.0126
-# left_post_cut = 262
-# right_post_cut = 178
-# dt = 0.00001
-# sample_rate = 2000
+number_of_cells_precut = 748
+dx = 0.0126
+left_post_cut = 262
+right_post_cut = 178
+dt = 0.0001/64
+sample_rate = int(200 * 64)
 
 ########################################################################################
 """ Set parameters ( from file 'params.py' )"""

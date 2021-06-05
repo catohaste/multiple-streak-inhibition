@@ -91,7 +91,7 @@ number_of_timepoints_postcut = len(t_postcut)
 a0 = np.zeros((number_of_cells_precut), dtype=float)
 c0 = np.zeros((number_of_cells_precut), dtype=float)
 v0 = np.zeros((number_of_cells_precut), dtype=float)
-b0 = np.zeros((number_of_cells_precut,))
+b0 = np.zeros((number_of_cells_precut), dtype=float)
 b_min = 1.1
 b_max = 2.2
 for i in range(int(number_of_cells_precut/2)):
@@ -154,11 +154,17 @@ pickle_directory = save_directory + 'vars/'
 if not os.path.isdir(pickle_directory):
     os.mkdir(pickle_directory)
     
-pickle.dump( t_relative_to_cut, open(pickle_directory + 't.p','wb') )
-pickle.dump( a, open(pickle_directory + 'a.p','wb') )
-pickle.dump( b, open(pickle_directory + 'b.p','wb') )
-pickle.dump( c, open(pickle_directory + 'c.p','wb') )
-pickle.dump( v, open(pickle_directory + 'v.p','wb') )
+a_reduced = a[:,::sample_rate]
+b_reduced = b[:,::sample_rate]
+c_reduced = c[:,::sample_rate]
+v_reduced = v[:,::sample_rate]
+t_reduced = t_relative_to_cut[::sample_rate]
+    
+pickle.dump( t_reduced, open(pickle_directory + 't.p','wb') )
+pickle.dump( a_reduced, open(pickle_directory + 'a.p','wb') )
+pickle.dump( b_reduced, open(pickle_directory + 'b.p','wb') )
+pickle.dump( c_reduced, open(pickle_directory + 'c.p','wb') )
+pickle.dump( v_reduced, open(pickle_directory + 'v.p','wb') )
     
 ########################################################################################
 """ Save code """

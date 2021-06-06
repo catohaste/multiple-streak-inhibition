@@ -64,6 +64,9 @@ def solve_ivp_odes(number_of_cells, number_of_timepoints, dt, dx, a0, b0, c0, v0
     v[:,0] = v0
 
     for t_idx in range(1, number_of_timepoints):
+        
+        if t_idx % 100000 == 0:
+            print("At time: " + str(t_idx))
 
         for cell_idx in range(number_of_cells):
         

@@ -77,11 +77,11 @@ postcut_time = total_time - cut_time
 
 t_precut = np.append(np.arange(0, cut_time, dt), cut_time)
 number_of_timepoints_precut = len(t_precut)
-# print(t_precut, len(t_precut))
+# print(len(t_precut))
 
 t_postcut = np.append(np.arange(cut_time, total_time, dt), total_time)
 number_of_timepoints_postcut = len(t_postcut)
-# print(t_postcut, len(t_postcut))
+# print(len(t_postcut))
 
 
 ########################################################################################

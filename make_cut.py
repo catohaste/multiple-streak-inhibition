@@ -29,7 +29,7 @@ now = datetime.now()
 date_time_str = now.strftime("%Y_%m_%d_%H%M")
 
 # save_directory = date_time_str
-save_directory = 'results/100cells/'
+save_directory = 'results/748cells/'
 # save_directory = 'testing/'
 if not os.path.isdir(save_directory):
     os.mkdir(save_directory)

@@ -1,6 +1,7 @@
 # manual ignores
 results/
 *.mp4
+nohup.out
 
 # Byte-compiled / optimized / DLL files
 __pycache__/

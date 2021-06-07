@@ -28,11 +28,13 @@ def create_animated_output(number_of_cells, sample_rate, t, a, b, v, c, save_dir
     # ax_c.set_ylim([0,5])
     ax_c.set_ylim([0,np.max(c)*1.1])
     ax_v.set_ylim([0,np.max(v)*1.1])
+    
+    anterior_cell = (number_of_cells - 1) / 2
 
-    ax_a.set_xticks([0,int(number_of_cells/2), number_of_cells])
-    ax_b.set_xticks([0,int(number_of_cells/2), number_of_cells])
-    ax_v.set_xticks([0,int(number_of_cells/2), number_of_cells])
-    ax_c.set_xticks([0,int(number_of_cells/2), number_of_cells])
+    ax_a.set_xticks([0,anterior_cell, number_of_cells - 1])
+    ax_b.set_xticks([0,anterior_cell, number_of_cells - 1])
+    ax_c.set_xticks([0,anterior_cell, number_of_cells - 1])
+    ax_v.set_xticks([0,anterior_cell, number_of_cells - 1])
 
     ax_a.set_xticklabels([])
     ax_b.set_xticklabels([])
@@ -40,6 +42,13 @@ def create_animated_output(number_of_cells, sample_rate, t, a, b, v, c, save_dir
     ax_c.set_xticklabels(['pos.', 'ant.', 'pos.'])
 
     ax_c.set_xlabel("Cell position")
+    
+    ant_x = [anterior_cell, anterior_cell]
+    
+    ant_a, = ax_a.plot( ant_x, [0,np.max(a)], lw=1, c='k', linestyle='dashed')
+    ant_b, = ax_b.plot( ant_x, [0,np.max(b)], lw=1, c='k', linestyle='dashed')
+    ant_c, = ax_c.plot( ant_x, [0,np.max(c)], lw=1, c='k', linestyle='dashed')
+    ant_v, = ax_v.plot( ant_x, [0,np.max(v)], lw=1, c='k', linestyle='dashed')
 
     line_a, = ax_a.plot( a_over_time[:,0], lw=3, c='C0', label='streak')
     line_b, = ax_b.plot( b[:,0], lw=3, c='C1', label='bmp')

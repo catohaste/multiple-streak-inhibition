@@ -44,13 +44,14 @@ if not os.path.isdir(save_directory):
 # dt = 0.0001/4
 # sample_rate = 200
 
-multiple = 1
-number_of_cells_precut = 100 * multiple
-dx = 0.094248 / multiple
-left_post_cut = int(35 * multiple)
-right_post_cut = int(24 * multiple)
-dt = 0.0001 / (multiple * multiple)
-sample_rate = 200 * (multiple * multiple)
+space_multiple = 1
+time_multple = 4
+number_of_cells_precut = 100 * space_multiple
+dx = 0.094248 / space_multiple
+left_post_cut = int(35 * space_multiple)
+right_post_cut = int(24 * space_multiple)
+dt = 0.0001 / (time_multiple * time_multiple)
+sample_rate = 200 * (time_multiple * time_multiple)
 
 # number_of_cells_precut = 748
 # dx = 0.0126

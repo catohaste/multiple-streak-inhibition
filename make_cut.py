@@ -28,11 +28,11 @@ total_start = time.time()
 """ Set run details """
 
 now = datetime.now()
-date_time_str = now.strftime("%Y_%m_%d_%H%M")
+date_time_str = 'results/' + now.strftime("%Y_%m_%d_%H%M") + '/'
 
-# save_directory = date_time_str
+save_directory = date_time_str
 # save_directory = 'results/748cells/'
-save_directory = 'results/testing/'
+# save_directory = 'results/testing/'
 if not os.path.isdir(save_directory):
     os.mkdir(save_directory)
 
@@ -40,18 +40,27 @@ if not os.path.isdir(save_directory):
 """ Set 'length' parameters """
 
 # number_of_cells_precut = 100
-# dx = 0.1
-# left_post_cut = 15
-# right_post_cut = 15
-# dt = 0.0001
+# dx = 0.094248
+# left_post_cut = 35
+# right_post_cut = 24
+# dt = 0.0001/4
 # sample_rate = 200
 
-number_of_cells_precut = 748
-dx = 0.0126
-left_post_cut = 262
-right_post_cut = 178
-dt = 0.0001/64
-sample_rate = int(200 * 64)
+space_multiple = 1
+time_multple = 4
+number_of_cells_precut = 100 * space_multiple
+dx = 0.094248 / space_multiple
+left_post_cut = int(35 * space_multiple)
+right_post_cut = int(24 * space_multiple)
+dt = 0.0001 / (time_multiple * time_multiple)
+sample_rate = 200 * (time_multiple * time_multiple)
+
+# number_of_cells_precut = 748
+# dx = 0.0126
+# left_post_cut = 262
+# right_post_cut = 178
+# dt = 0.0001/64
+# sample_rate = int(200 * 64)
 
 ########################################################################################
 """ Set parameters ( from file 'params.py' )"""

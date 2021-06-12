@@ -29,6 +29,9 @@ def create_animated_output(number_of_cells, sample_rate, t, a, b, v, c, save_dir
     ax_c.set_ylim([0,np.max(c)*1.1])
     ax_v.set_ylim([0,np.max(v)*1.1])
     
+    ax_a.set_yticks([0,1])
+    ax_a.set_yticklabels(['ON','OFF'])
+    
     anterior_cell = (number_of_cells - 1) / 2
 
     ax_a.set_xticks([0,anterior_cell, number_of_cells - 1])
@@ -50,10 +53,10 @@ def create_animated_output(number_of_cells, sample_rate, t, a, b, v, c, save_dir
     ant_c, = ax_c.plot( ant_x, [0,np.max(c)], lw=1, c='k', linestyle='dashed')
     ant_v, = ax_v.plot( ant_x, [0,np.max(v)], lw=1, c='k', linestyle='dashed')
 
-    line_a, = ax_a.plot( a_over_time[:,0], lw=3, c='C0', label='streak')
-    line_b, = ax_b.plot( b[:,0], lw=3, c='C1', label='bmp')
-    line_c, = ax_c.plot( c[:,0], lw=3, c='C2',label='calcium')
-    line_v, = ax_v.plot( v[:,0], lw=3, c='C3',label='vg1')
+    line_a, = ax_a.plot( a_over_time[:,0], lw=3, c='C0', label='Nodal')
+    line_b, = ax_b.plot( b[:,0], lw=3, c='C1', label='BMP4')
+    line_c, = ax_c.plot( c[:,0], lw=3, c='C2',label='Ca2+')
+    line_v, = ax_v.plot( v[:,0], lw=3, c='C3',label='cVG1')
 
     text_x_loc = number_of_cells/3
     text_y_loc = 0.85*a_ymax
@@ -70,10 +73,10 @@ def create_animated_output(number_of_cells, sample_rate, t, a, b, v, c, save_dir
 
 
     def init():
-        line_a, = ax_a.plot([],[], lw=3, c='C0', label='streak')
-        line_b, = ax_b.plot([],[], lw=3, c='C1', label='bmp')
-        line_c, = ax_c.plot([], [],lw=3, c='C2',label='calcium')
-        line_v, = ax_v.plot([], [],lw=3, c='C3',label='vg1')
+        line_a, = ax_a.plot([],[], lw=3, c='C0', label='Nodal')
+        line_b, = ax_b.plot([],[], lw=3, c='C1', label='BMP4')
+        line_c, = ax_c.plot([], [],lw=3, c='C2',label='Ca2+')
+        line_v, = ax_v.plot([], [],lw=3, c='C3',label='cVG1')
         time_text.set_text('t = ')
         return line_a, line_b, line_c, line_v, time_text,
     def animate(i):

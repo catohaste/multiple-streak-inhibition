@@ -2,9 +2,9 @@ import pickle
 
 from plot import create_animated_output
 
-save_directory = 'results/748cells/'
+save_directory = 'results/testing/'
 
-number_of_cells = 748
+number_of_cells = 100
 
 ########################################################################################
 """ Pickle variables """

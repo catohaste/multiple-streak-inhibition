@@ -55,17 +55,17 @@ def create_animated_output(number_of_cells, sample_rate, t, a, b, v, c, save_dir
     ant_c, = ax_c.plot( ant_x, [0,np.max(c)], lw=1, c='k', linestyle='dashed')
     ant_v, = ax_v.plot( ant_x, [0,np.max(v)], lw=1, c='k', linestyle='dashed')
 
-    line_a, = ax_a.plot( a_over_time[:,0], lw=3, c='C0', label='Nodal')
-    line_b, = ax_b.plot( b[:,0], lw=3, c='C1', label='BMP4')
-    line_c, = ax_c.plot( c[:,0], lw=3, c='C2',label='Ca2+')
-    line_v, = ax_v.plot( v[:,0], lw=3, c='C3',label='cVG1')
+    line_a, = ax_a.plot( a_over_time[:,0], lw=3, c='C0', label='NODAL')
+    line_b, = ax_b.plot( b[:,0], lw=3, c='C3', label='BMP4')
+    line_c, = ax_c.plot( c[:,0], lw=3, c='C1',label='Ca2+\nactivity')
+    line_v, = ax_v.plot( v[:,0], lw=3, c='C9',label='cVG1')
 
     time_x_loc = number_of_cells/3
     time_y_loc = 0.87*a_ymax
     time_text = ax_a.text(time_x_loc, time_y_loc,'t = ', fontsize=16)
     nodal_x_loc = (number_of_cells/3) - (number_of_cells * 0.03)
     nodal_y_loc = 0.73*a_ymax
-    nodal_text = ax_a.text(nodal_x_loc, nodal_y_loc,'Nodal cells: ', fontsize=12)
+    nodal_text = ax_a.text(nodal_x_loc, nodal_y_loc,'NODAL cells: ', fontsize=12)
 
     ax_a.legend(loc=2)
     ax_b.legend(loc=2)
@@ -78,10 +78,10 @@ def create_animated_output(number_of_cells, sample_rate, t, a, b, v, c, save_dir
 
 
     def init():
-        line_a, = ax_a.plot([],[], lw=3, c='C0', label='Nodal')
-        line_b, = ax_b.plot([],[], lw=3, c='C1', label='BMP4')
-        line_c, = ax_c.plot([], [],lw=3, c='C2',label='Ca2+')
-        line_v, = ax_v.plot([], [],lw=3, c='C3',label='cVG1')
+        line_a, = ax_a.plot([],[], lw=3, c='C0', label='NODAL')
+        line_b, = ax_b.plot([],[], lw=3, c='C3', label='BMP4')
+        line_c, = ax_c.plot([], [],lw=3, c='C1',label='Ca2+\nactivity')
+        line_v, = ax_v.plot([], [],lw=3, c='C9',label='cVG1')
         time_text.set_text('t = ')
         nodal_text.set_text('Nodal cells: ')
         return line_a, line_b, line_c, line_v, time_text, nodal_text,
@@ -161,7 +161,7 @@ def create_stills_array(time_indices, number_of_cells, t, a, b, v, c, filename):
             
             ax_a.set_ylabel('NODAL', fontweight='bold')
             ax_b.set_ylabel('BMP4\n', fontweight='bold')
-            ax_c.set_ylabel('Ca2+', fontweight='bold')
+            ax_c.set_ylabel('Ca2+\nactivity', fontweight='bold')
             ax_v.set_ylabel('cVG1\n', fontweight='bold')
             
         else:

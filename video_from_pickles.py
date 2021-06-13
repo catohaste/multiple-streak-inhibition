@@ -2,7 +2,7 @@ import pickle
 
 from plot import create_animated_output
 
-save_directory = 'results/testing/'
+save_directory = 'results/nCellsExp/100cells/'
 
 number_of_cells = 100
 

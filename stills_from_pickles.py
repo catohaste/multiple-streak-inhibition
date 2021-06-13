@@ -5,7 +5,7 @@ from copy import deepcopy
 
 from plot import create_animated_output, create_stills_array
 
-save_directory = 'results/nCellsExp/100cells/'
+save_directory = 'results/100cells/'
 
 number_of_cells = 100
 
@@ -29,9 +29,9 @@ if not os.path.isdir(stills_directory):
 
 t = np.around(t, 2)
 
-# stills_timepoints = [-1.2, -0.6, 0, 0.02, 1, 2.68, 3.4, 3.8, 5.1, 8.8]
+# stills_timepoints = [-1.2, -0.6, 0, 0.02, 1, 2.28, 3.04, 3.8, 5.1, 8.8]
 stills_early_timepoints = [-1.2, -0.6, 0, 0.02, 1]
-stills_late_timepoints = [2.68, 3.4, 3.8, 5.1, 8.8]
+stills_late_timepoints = [2.28, 3.04, 3.8, 5.1, 8.8]
 stills_early_indices = deepcopy(stills_early_timepoints)
 stills_late_indices = deepcopy(stills_late_timepoints)   
 for idx, val in enumerate(stills_early_timepoints):

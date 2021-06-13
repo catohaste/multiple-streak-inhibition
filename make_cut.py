@@ -31,7 +31,7 @@ now = datetime.now()
 date_time_str = 'results/' + now.strftime("%Y_%m_%d_%H%M") + '/'
 
 save_directory = date_time_str
-# save_directory = 'results/748cells/'
+# save_directory = 'results/100cells/'
 # save_directory = 'results/testing/'
 if not os.path.isdir(save_directory):
     os.mkdir(save_directory)
@@ -46,8 +46,9 @@ if not os.path.isdir(save_directory):
 # dt = 0.0001/4
 # sample_rate = 200
 
+# nCellsExp
 space_multiple = 1
-time_multple = 4
+time_multiple = 1
 number_of_cells_precut = 100 * space_multiple
 dx = 0.094248 / space_multiple
 left_post_cut = int(35 * space_multiple)

@@ -30,11 +30,22 @@ total_start = time.time()
 now = datetime.now()
 date_time_str = 'results/' + now.strftime("%Y_%m_%d_%H%M") + '/'
 
-save_directory = date_time_str
-# save_directory = 'results/100cells/'
+# save_directory = date_time_str
+save_directory = 'results/748cells_v2/'
 # save_directory = 'results/testing/'
 if not os.path.isdir(save_directory):
     os.mkdir(save_directory)
+    
+########################################################################################
+""" Save code """
+    
+code_directory = save_directory + 'code/'
+if not os.path.isdir(code_directory):
+    os.mkdir(code_directory)
+
+filenames = ['make_cut.py', 'params.py', 'models.py', 'plot.py']
+for filename in filenames:
+    copy2(filename, code_directory + filename)
 
 ########################################################################################
 """ Set 'length' parameters """
@@ -47,38 +58,24 @@ if not os.path.isdir(save_directory):
 # sample_rate = 200
 
 # nCellsExp
-space_multiple = 1
-time_multiple = 1
-number_of_cells_precut = 100 * space_multiple
-dx = 0.094248 / space_multiple
-left_post_cut = int(35 * space_multiple)
-right_post_cut = int(24 * space_multiple)
-dt = 0.0001 / (time_multiple * time_multiple)
-sample_rate = 200 * (time_multiple * time_multiple)
+# space_multiple = 1
+# time_multiple = 1
+# number_of_cells_precut = 100 * space_multiple
+# dx = 0.094248 / space_multiple
+# left_post_cut = int(35 * space_multiple)
+# right_post_cut = int(24 * space_multiple)
+# dt = 0.0001 / (time_multiple * time_multiple)
+# sample_rate = 200 * (time_multiple * time_multiple)
+# params['k'] = params['k'] * space_multiple
+# print(params['k'])
 
-# number_of_cells_precut = 748
-# dx = 0.0126
-# left_post_cut = 262
-# right_post_cut = 178
-# dt = 0.0001/64
-# sample_rate = int(200 * 64)
-
-########################################################################################
-""" Set parameters ( from file 'params.py' )"""
-
-# unpack params
-c_threshold = params["c_threshold"]
-c_b_threshold = params["c_b_threshold"]
-v_b_threshold = params["v_b_threshold"]
-rho = params["rho"]
-gamma_0 = params["gamma_0"]
-gamma = params["gamma"]
-k = params["k"]
-k_v = params["k_v"]
-mu = params["mu"]
-lambda_const = params["lambda_const"]
-lambda_const_v_0 = params["lambda_const_v_0"]
-lambda_const_v_b = params["lambda_const_v_b"]
+number_of_cells_precut = 748
+dx = 0.0126
+left_post_cut = 262
+right_post_cut = 178
+dt = 0.0001/64
+sample_rate = int(200 * 64)
+params['k'] = params['k'] * 7.48
 
 ########################################################################################
 """ Set desired timepoints """
@@ -178,17 +175,6 @@ pickle.dump( a, open(pickle_directory + 'a.p','wb') )
 pickle.dump( b, open(pickle_directory + 'b.p','wb') )
 pickle.dump( c, open(pickle_directory + 'c.p','wb') )
 pickle.dump( v, open(pickle_directory + 'v.p','wb') )
-    
-########################################################################################
-""" Save code """
-    
-code_directory = save_directory + 'code/'
-if not os.path.isdir(code_directory):
-    os.mkdir(code_directory)
-
-filenames = ['make_cut.py', 'params.py', 'models.py', 'plot.py']
-for filename in filenames:
-    copy2(filename, code_directory + filename)
 
 ########################################################################################
 """ Create animated output """

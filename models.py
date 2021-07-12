@@ -40,7 +40,8 @@ def solve_ivp_odes(number_of_cells, number_of_timepoints, dt, dx, a0, b0, c0, v0
     v_b_threshold = params["v_b_threshold"]
     rho = params["rho"]
     gamma_0 = params["gamma_0"]
-    gamma = params["gamma"]
+    gamma_c = params["gamma_c"]
+    gamma_v = params["gamma_v"]
     k = params["k"]
     k_v = params["k_v"]
     mu = params["mu"]
@@ -88,7 +89,7 @@ def solve_ivp_odes(number_of_cells, number_of_timepoints, dt, dx, a0, b0, c0, v0
             H_c[cell_idx] = np.heaviside(c_current[cell_idx] - c_threshold,1)
             H_v_b[cell_idx] = np.heaviside(v_b_threshold - b_current[cell_idx], 1)
 
-            b_new[cell_idx] = b_current[cell_idx] + dt * ((rho * H_c[cell_idx]) - (b_current[cell_idx] * (gamma_0 + (gamma * c_current[cell_idx]))))
+            b_new[cell_idx] = b_current[cell_idx] + dt * ((rho * H_c[cell_idx]) - (b_current[cell_idx] * (gamma_0 + (gamma_c * c_current[cell_idx]) + (gamma_v * v_current[cell_idx]))))
             c_new[cell_idx] = c_current[cell_idx] + dt * ((k * a_current[cell_idx]) + (mu * np.power(1/dx,2) * (c_bar - c_current[cell_idx])) - (lambda_const * c_current[cell_idx]))
             v_new[cell_idx] = v_current[cell_idx] + dt * ((k_v * H_v_b[cell_idx]) - (v_current[cell_idx] * (lambda_const_v_0 + (lambda_const_v_b * b_current[cell_idx]))))
 

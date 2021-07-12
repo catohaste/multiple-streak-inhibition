@@ -2,7 +2,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 from matplotlib.animation import FuncAnimation
 
-def create_animated_output(number_of_cells, sample_rate, t, a, b, v, c, save_directory):
+def create_animated_output(number_of_cells, sample_rate, t, a, b, v, c, params, save_directory):
     
     a_over_time = a
     
@@ -10,12 +10,14 @@ def create_animated_output(number_of_cells, sample_rate, t, a, b, v, c, save_dir
     
     number_of_frames = int(len(t) / sample_rate)
 
-    fig = plt.figure(figsize=(4,8))
-
-    ax_a = fig.add_subplot(4,1,1)
-    ax_v = fig.add_subplot(4,1,2)
-    ax_b = fig.add_subplot(4,1,3)
-    ax_c = fig.add_subplot(4,1,4)
+    # fig = plt.figure(figsize=(4,8))
+ #
+ #    ax_a = fig.add_subplot(4,1,1)
+ #    ax_v = fig.add_subplot(4,1,2)
+ #    ax_b = fig.add_subplot(4,1,3)
+ #    ax_c = fig.add_subplot(4,1,4)
+    
+    fig, (ax_a, ax_v, ax_b, ax_c) = plt.subplots(nrows=4, ncols=1, sharex=True, figsize=(4,8))
 
     # ax.plot(a[:,100])
 
@@ -50,10 +52,16 @@ def create_animated_output(number_of_cells, sample_rate, t, a, b, v, c, save_dir
     
     ant_x = [anterior_cell, anterior_cell]
     
+    threshold_streak = [params["c_b_threshold"], params["c_b_threshold"]]
+    threshold_vg1 = [params["v_b_threshold"], params["v_b_threshold"]]
+    
     ant_a, = ax_a.plot( ant_x, [0,np.max(a)], lw=1, c='k', linestyle='dashed')
     ant_b, = ax_b.plot( ant_x, [0,np.max(b)], lw=1, c='k', linestyle='dashed')
     ant_c, = ax_c.plot( ant_x, [0,np.max(c)], lw=1, c='k', linestyle='dashed')
     ant_v, = ax_v.plot( ant_x, [0,np.max(v)], lw=1, c='k', linestyle='dashed')
+    
+    threshold_streak_line, = ax_b.plot( [0, number_of_cells - 1],threshold_streak, lw=1, c='C0', linestyle='dashed')
+    threshold_vg1_line, = ax_b.plot( [0, number_of_cells - 1], threshold_vg1, lw=1, c='C9', linestyle='dashed')
 
     line_a, = ax_a.plot( a_over_time[:,0], lw=3, c='C0', label='NODAL')
     line_b, = ax_b.plot( b[:,0], lw=3, c='C3', label='BMP4')
@@ -75,7 +83,6 @@ def create_animated_output(number_of_cells, sample_rate, t, a, b, v, c, save_dir
     plt.tight_layout()
 
     # plt.show()
-
 
     def init():
         line_a, = ax_a.plot([],[], lw=3, c='C0', label='NODAL')

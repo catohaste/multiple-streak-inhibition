@@ -20,5 +20,5 @@ v = pickle.load( open(pickle_directory + 'v.p','rb') )
 ########################################################################################
 """ Create animated output """
 
-create_animated_output(number_of_cells, 1, t, a, b, v, c, save_directory)
+create_animated_output(number_of_cells, 1, t, a, b, v, c, params, save_directory)
 

@@ -31,7 +31,7 @@ now = datetime.now()
 date_time_str = 'results/' + now.strftime("%Y_%m_%d_%H%M") + '/'
 
 # save_directory = date_time_str
-save_directory = 'results/748cells_v2/'
+save_directory = 'results/gamma_v/0_02/'
 # save_directory = 'results/testing/'
 if not os.path.isdir(save_directory):
     os.mkdir(save_directory)
@@ -50,12 +50,12 @@ for filename in filenames:
 ########################################################################################
 """ Set 'length' parameters """
 
-# number_of_cells_precut = 100
-# dx = 0.094248
-# left_post_cut = 35
-# right_post_cut = 24
-# dt = 0.0001/4
-# sample_rate = 200
+number_of_cells_precut = 100
+dx = 0.094248
+left_post_cut = 35
+right_post_cut = 24
+dt = 0.0001 # /4
+sample_rate = 200
 
 # nCellsExp
 # space_multiple = 1
@@ -69,18 +69,20 @@ for filename in filenames:
 # params['k'] = params['k'] * space_multiple
 # print(params['k'])
 
-number_of_cells_precut = 748
-dx = 0.0126
-left_post_cut = 262
-right_post_cut = 178
-dt = 0.0001/64
-sample_rate = int(200 * 64)
-params['k'] = params['k'] * 7.48
+# number_of_cells_precut = 748
+# dx = 0.0126
+# left_post_cut = 262
+# right_post_cut = 178
+# dt = 0.0001/64
+# sample_rate = int(200 * 64)
+# params['k'] = params['k'] * 7.48
 
 ########################################################################################
 """ Set desired timepoints """
 
 start_time = 0
+# total_time = 20
+# cut_time = 2.4
 total_time = 10
 cut_time = 1.2
 postcut_time = total_time - cut_time
@@ -179,7 +181,7 @@ pickle.dump( v, open(pickle_directory + 'v.p','wb') )
 ########################################################################################
 """ Create animated output """
 
-create_animated_output(number_of_cells_precut, 1, t_relative_to_cut, a, b, v, c, save_directory)
+create_animated_output(number_of_cells_precut, 1, t_relative_to_cut, a, b, v, c, params, save_directory)
 
 total_end = time.time()
 print("Total time consumed in working: ",total_end - total_start)

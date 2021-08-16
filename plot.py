@@ -1,6 +1,9 @@
 import numpy as np
 import matplotlib.pyplot as plt
 from matplotlib.animation import FuncAnimation
+from matplotlib.patches import Wedge
+from matplotlib.collections import PatchCollection
+import matplotlib
 
 def create_animated_output(number_of_cells, sample_rate, t, a, b, v, c, params, save_directory):
     
@@ -293,3 +296,67 @@ def create_stills_array(time_indices, number_of_cells, t, a, b, v, c, filename):
     fig.savefig(filename, dpi=300, orientation='portrait', format='png') #, transparent=True)
     
 
+def create_circle_animation(var, save_directory):
+
+        number_of_cells = var.shape[0]
+        number_of_steps = var.shape[1] # timesteps
+        
+        b_max = np.amax(var)
+        b_min = np.amin(var)
+
+        fig = plt.figure()
+        ax = fig.add_subplot(111)
+        
+        ax.set_ylim([1,-1])
+        ax.set_xlim([1,-1])
+        
+        ax.set_aspect('equal')
+        ax.axis('off')
+        
+        theta_list = np.linspace(90 , 450, 101)
+        b_patches = []
+        for i in range(len(theta_list) - 1):
+            b_patches.append(Wedge((0,0), 0.8, theta_list[i], theta_list[i+1], width=0.1))
+        
+        b_patch_col = PatchCollection(b_patches)
+        b_colors = var[:,0]
+        b_patch_col.set_array(np.array(b_colors))
+        b_patch_col.set_clim(vmin=b_min, vmax=b_max)
+        b_patch_col.set_cmap('viridis')
+        ax.add_collection(b_patch_col)
+        fig.colorbar(b_patch_col, ax=ax)
+
+        # ax.text(-0.9, 0.5, label_string, fontsize=20)
+        #
+        # current_time = 0
+        # time_string = 't = ' + str(current_time) + 's'
+        # time_text = ax.text(-0.9, -0.5,[],fontsize=16)
+        # time_text.set_text(time_string)
+        
+        def init():
+            b_colors = var[:,0]
+            b_patch_col.set_array(np.array(b_colors))
+            b_patch_col.set_clim(vmin=b_min, vmax=b_max)
+            return b_patch_col, 
+
+        sample_rate = 1
+        def animate(i):
+            sample_rate = 1
+            b_colors = var[:,sample_rate * i]
+            b_patch_col.set_array(np.array(b_colors))
+            b_patch_col.set_clim(vmin=b_min, vmax=b_max)
+            return b_patch_col, 
+        
+        
+        number_of_frames = int(np.ceil(number_of_steps / sample_rate))
+        frames_per_second = 24
+        interval = np.ceil(1000/frames_per_second)
+
+        anim = FuncAnimation(fig, animate, init_func=init, interval=interval, frames=number_of_frames, blit=True)
+        
+        anim.save(save_directory + 'circle' + '.mp4', fps=frames_per_second, extra_args=['-vcodec', 'libx264'])
+
+        # plt.savefig(save_directory + 'circle' + '.jpg')
+        
+        # plt.show()
+        

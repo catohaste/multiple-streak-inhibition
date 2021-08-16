@@ -31,7 +31,7 @@ now = datetime.now()
 date_time_str = 'results/' + now.strftime("%Y_%m_%d_%H%M") + '/'
 
 # save_directory = date_time_str
-save_directory = 'results/asymmetric_large_cut/35L_35R/'
+save_directory = 'results/testing/'
 # save_directory = 'results/testing/'
 if not os.path.isdir(save_directory):
     os.mkdir(save_directory)
@@ -52,8 +52,8 @@ for filename in filenames:
 
 number_of_cells_precut = 100
 dx = 0.094248
-left_post_cut = 35
-right_post_cut = 35
+left_post_cut = 36
+right_post_cut = 34
 # left_post_cut = 35
 # right_post_cut = 24
 dt = 0.0001 # /4

@@ -1,6 +1,7 @@
 import pickle
+import matplotlib.pyplot as plt
 
-from plot import create_animated_output, create_animated_output_extra_calcium
+from plot import create_animated_output, create_animated_output_extra_calcium, create_circle_animation
 
 from params import params
 
@@ -22,5 +23,6 @@ v = pickle.load( open(pickle_directory + 'v.p','rb') )
 ########################################################################################
 """ Create animated output """
 
-create_animated_output_extra_calcium(number_of_cells, 1, t, a, b, v, c, params, save_directory)
+# create_animated_output_extra_calcium(number_of_cells, 1, t, a, b, v, c, params, save_directory)
 
+create_circle_animation(b, save_directory)

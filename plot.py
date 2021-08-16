@@ -29,8 +29,8 @@ def create_animated_output(number_of_cells, sample_rate, t, a, b, v, c, params, 
 
     ax_a.set_ylim([0,a_ymax])
     ax_b.set_ylim([0,np.max(b)*1.1])
-    # ax_c.set_ylim([0,5])
-    ax_c.set_ylim([0,np.max(c)*1.1])
+    ax_c.set_ylim([0,10])
+    # ax_c.set_ylim([0,np.max(c)*1.1])
     ax_v.set_ylim([0,np.max(v)*1.1])
     
     ax_a.set_yticks([0,1])
@@ -57,7 +57,8 @@ def create_animated_output(number_of_cells, sample_rate, t, a, b, v, c, params, 
     
     ant_a, = ax_a.plot( ant_x, [0,np.max(a)], lw=1, c='k', linestyle='dashed')
     ant_b, = ax_b.plot( ant_x, [0,np.max(b)], lw=1, c='k', linestyle='dashed')
-    ant_c, = ax_c.plot( ant_x, [0,np.max(c)], lw=1, c='k', linestyle='dashed')
+    ant_c, = ax_c.plot( ant_x, [0,10], lw=1, c='k', linestyle='dashed')
+    # ant_c, = ax_c.plot( ant_x, [0,np.max(c)], lw=1, c='k', linestyle='dashed')
     ant_v, = ax_v.plot( ant_x, [0,np.max(v)], lw=1, c='k', linestyle='dashed')
     
     threshold_streak_line, = ax_b.plot( [0, number_of_cells - 1],threshold_streak, lw=1, c='C0', linestyle='dashed')
@@ -87,8 +88,8 @@ def create_animated_output(number_of_cells, sample_rate, t, a, b, v, c, params, 
     def init():
         line_a, = ax_a.plot([],[], lw=3, c='C0', label='NODAL')
         line_b, = ax_b.plot([],[], lw=3, c='C3', label='BMP4')
-        line_c, = ax_c.plot([], [],lw=3, c='C1',label='Ca2+\nactivity')
-        line_v, = ax_v.plot([], [],lw=3, c='C9',label='cVG1')
+        line_c, = ax_c.plot([],[],lw=3, c='C1',label='Ca2+\nactivity')
+        line_v, = ax_v.plot([],[],lw=3, c='C9',label='cVG1')
         time_text.set_text('t = ')
         nodal_text.set_text('Nodal cells: ')
         return line_a, line_b, line_c, line_v, time_text, nodal_text,
@@ -100,6 +101,110 @@ def create_animated_output(number_of_cells, sample_rate, t, a, b, v, c, params, 
         time_text.set_text('t = ' + "{:.1f}".format(t[i * sample_rate]) +'h')
         nodal_text.set_text('Nodal cells: ' + str(int(nodal_count[i * sample_rate])))
         return line_a, line_b, line_c, line_v, time_text, nodal_text,
+
+    anim = FuncAnimation(fig, animate, init_func=init, frames=number_of_frames, blit=False)
+
+    anim.save(save_directory + 'hello.mp4', writer='ffmpeg', fps=10)
+    
+    return
+    
+def create_animated_output_extra_calcium(number_of_cells, sample_rate, t, a, b, v, c, params, save_directory):
+    
+    a_over_time = a
+    
+    nodal_count = np.sum(a, axis=0)
+    
+    number_of_frames = int(len(t) / sample_rate)
+    
+    fig, (ax_a, ax_v, ax_b, ax_c_low, ax_c_high) = plt.subplots(nrows=5, ncols=1, sharex=True, figsize=(3.5,8))
+
+    a_ymax = np.max(a)*1.5 # 0.01
+    
+    c_low_max = 10
+    c_high_max = 110
+
+    ax_a.set_ylim([0,a_ymax])
+    ax_b.set_ylim([0,np.max(b)*1.1])
+    ax_c_low.set_ylim([0,c_low_max])
+    ax_c_high.set_ylim([0,c_high_max])
+    ax_v.set_ylim([0,np.max(v)*1.1])
+    
+    ax_a.set_yticks([0,1])
+    ax_a.set_yticklabels(['OFF','ON'])
+    
+    anterior_cell = (number_of_cells - 1) / 2
+
+    ax_a.set_xticks([0,anterior_cell, number_of_cells - 1])
+    ax_b.set_xticks([0,anterior_cell, number_of_cells - 1])
+    ax_c_low.set_xticks([0,anterior_cell, number_of_cells - 1])
+    ax_c_high.set_xticks([0,anterior_cell, number_of_cells - 1])
+    ax_v.set_xticks([0,anterior_cell, number_of_cells - 1])
+
+    ax_a.set_xticklabels([])
+    ax_b.set_xticklabels([])
+    ax_v.set_xticklabels([])
+    ax_c_low.set_xticklabels([])
+    ax_c_high.set_xticklabels(['pos.', 'ant.', 'pos.'])
+
+    ax_c_high.set_xlabel("Cell position")
+    
+    ant_x = [anterior_cell, anterior_cell]
+    
+    threshold_streak = [params["c_b_threshold"], params["c_b_threshold"]]
+    threshold_vg1 = [params["v_b_threshold"], params["v_b_threshold"]]
+    
+    ant_a, = ax_a.plot( ant_x, [0,np.max(a)], lw=1, c='k', linestyle='dashed')
+    ant_b, = ax_b.plot( ant_x, [0,np.max(b)], lw=1, c='k', linestyle='dashed')
+    ant_c_low, = ax_c_low.plot( ant_x, [0,c_low_max], lw=1, c='k', linestyle='dashed')
+    ant_c_high, = ax_c_high.plot( ant_x, [0,c_high_max], lw=1, c='k', linestyle='dashed')
+    ant_v, = ax_v.plot( ant_x, [0,np.max(v)], lw=1, c='k', linestyle='dashed')
+    
+    threshold_streak_line, = ax_b.plot( [0, number_of_cells - 1],threshold_streak, lw=1, c='C0', linestyle='dashed')
+    threshold_vg1_line, = ax_b.plot( [0, number_of_cells - 1], threshold_vg1, lw=1, c='C9', linestyle='dashed')
+
+    line_a, = ax_a.plot( a_over_time[:,0], lw=3, c='C0', label='NODAL')
+    line_b, = ax_b.plot( b[:,0], lw=3, c='C3', label='BMP4')
+    line_c_low, = ax_c_low.plot( c[:,0], lw=3, c='C1',label='Ca2+\nactivity')
+    line_c_high, = ax_c_high.plot( c[:,0], lw=3, c='C1',label='Ca2+\nactivity')
+    line_v, = ax_v.plot( v[:,0], lw=3, c='C9',label='cVG1')
+
+    text_x_loc = number_of_cells * 0.68
+    # text_x_loc = number_of_cells * 0.33
+    time_x_loc = text_x_loc
+    time_y_loc = 0.85*a_ymax
+    time_text = ax_a.text(time_x_loc, time_y_loc,'t = ', fontsize=14)
+    nodal_x_loc = text_x_loc - number_of_cells*0.05
+    nodal_y_loc = 0.74*a_ymax
+    nodal_text = ax_a.text(nodal_x_loc, nodal_y_loc,'NODAL cells: ', fontsize=10)
+
+    ax_a.legend(loc=2)
+    ax_b.legend(loc=2)
+    # ax_c_low.legend(loc=2)
+    ax_c_high.legend(loc=2)
+    ax_v.legend(loc=2)
+
+    plt.tight_layout()
+
+    # plt.show()
+
+    def init():
+        line_a, = ax_a.plot([],[], lw=3, c='C0', label='NODAL')
+        line_b, = ax_b.plot([],[], lw=3, c='C3', label='BMP4')
+        line_c_low, = ax_c_low.plot([],[],lw=3, c='C1',label='Ca2+\nactivity')
+        line_c_high, = ax_c_high.plot([],[],lw=3, c='C1',label='Ca2+\nactivity')
+        line_v, = ax_v.plot([],[],lw=3, c='C9',label='cVG1')
+        time_text.set_text('t = ')
+        nodal_text.set_text('Nodal cells: ')
+        return line_a, line_b, line_c_low, line_c_high, line_v, time_text, nodal_text,
+    def animate(i):
+        line_a.set_data(range(number_of_cells), a_over_time[:,i * sample_rate])
+        line_b.set_data(range(number_of_cells), b[:,i * sample_rate])
+        line_c_low.set_data(range(number_of_cells), c[:,i * sample_rate])
+        line_c_high.set_data(range(number_of_cells), c[:,i * sample_rate])
+        line_v.set_data(range(number_of_cells), v[:,i * sample_rate])
+        time_text.set_text('t = ' + "{:.1f}".format(t[i * sample_rate]) +'h')
+        nodal_text.set_text('Nodal cells: ' + str(int(nodal_count[i * sample_rate])))
+        return line_a, line_b, line_c_low,line_c_high, line_v, time_text, nodal_text,
 
     anim = FuncAnimation(fig, animate, init_func=init, frames=number_of_frames, blit=False)
 
@@ -187,4 +292,4 @@ def create_stills_array(time_indices, number_of_cells, t, a, b, v, c, filename):
     
     fig.savefig(filename, dpi=300, orientation='portrait', format='png') #, transparent=True)
     
-    
+

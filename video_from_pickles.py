@@ -1,8 +1,10 @@
 import pickle
 
-from plot import create_animated_output
+from plot import create_animated_output, create_animated_output_extra_calcium
 
-save_directory = 'results/nCellsExp/100cells/'
+from params import params
+
+save_directory = 'results/testing/'
 
 number_of_cells = 100
 
@@ -20,5 +22,5 @@ v = pickle.load( open(pickle_directory + 'v.p','rb') )
 ########################################################################################
 """ Create animated output """
 
-create_animated_output(number_of_cells, 1, t, a, b, v, c, params, save_directory)
+create_animated_output_extra_calcium(number_of_cells, 1, t, a, b, v, c, params, save_directory)
 

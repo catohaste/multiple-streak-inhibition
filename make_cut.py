@@ -31,7 +31,7 @@ now = datetime.now()
 date_time_str = 'results/' + now.strftime("%Y_%m_%d_%H%M") + '/'
 
 # save_directory = date_time_str
-save_directory = 'results/gamma_v/0_02/'
+save_directory = 'results/asymmetric_large_cut/35L_35R/'
 # save_directory = 'results/testing/'
 if not os.path.isdir(save_directory):
     os.mkdir(save_directory)
@@ -53,7 +53,9 @@ for filename in filenames:
 number_of_cells_precut = 100
 dx = 0.094248
 left_post_cut = 35
-right_post_cut = 24
+right_post_cut = 35
+# left_post_cut = 35
+# right_post_cut = 24
 dt = 0.0001 # /4
 sample_rate = 200
 
@@ -184,4 +186,4 @@ pickle.dump( v, open(pickle_directory + 'v.p','wb') )
 create_animated_output(number_of_cells_precut, 1, t_relative_to_cut, a, b, v, c, params, save_directory)
 
 total_end = time.time()
-print("Total time consumed in working: ",total_end - total_start)
+print("Total time consumed in working: ", total_end - total_start)

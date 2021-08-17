@@ -154,10 +154,15 @@ print("Time consumed solving postcut: ",end - start)
 t_postcut = store_t_postcut[1:]
 postcut_steps = len(t_postcut)
 
-a_postcut = np.concatenate((np.zeros((left_post_cut,postcut_steps)), a_postcut_short[:,1:], np.zeros((right_post_cut,postcut_steps))))
-b_postcut = np.concatenate((np.zeros((left_post_cut,postcut_steps)), b_postcut_short[:,1:], np.zeros((right_post_cut,postcut_steps))))
-c_postcut = np.concatenate((np.zeros((left_post_cut,postcut_steps)), c_postcut_short[:,1:], np.zeros((right_post_cut,postcut_steps))))
-v_postcut = np.concatenate((np.zeros((left_post_cut,postcut_steps)), v_postcut_short[:,1:], np.zeros((right_post_cut,postcut_steps))))
+# a_postcut = np.concatenate((np.zeros((left_post_cut,postcut_steps)), a_postcut_short[:,1:], np.zeros((right_post_cut,postcut_steps))))
+# b_postcut = np.concatenate((np.zeros((left_post_cut,postcut_steps)), b_postcut_short[:,1:], np.zeros((right_post_cut,postcut_steps))))
+# c_postcut = np.concatenate((np.zeros((left_post_cut,postcut_steps)), c_postcut_short[:,1:], np.zeros((right_post_cut,postcut_steps))))
+# v_postcut = np.concatenate((np.zeros((left_post_cut,postcut_steps)), v_postcut_short[:,1:], np.zeros((right_post_cut,postcut_steps))))
+
+a_postcut = np.concatenate((-1 * np.ones((left_post_cut,postcut_steps)), a_postcut_short[:,1:], -1 * np.ones((right_post_cut,postcut_steps))))
+b_postcut = np.concatenate((-1 * np.ones((left_post_cut,postcut_steps)), b_postcut_short[:,1:], -1 * np.ones((right_post_cut,postcut_steps))))
+c_postcut = np.concatenate((-1 * np.ones((left_post_cut,postcut_steps)), c_postcut_short[:,1:], -1 * np.ones((right_post_cut,postcut_steps))))
+v_postcut = np.concatenate((-1 * np.ones((left_post_cut,postcut_steps)), v_postcut_short[:,1:], -1 * np.ones((right_post_cut,postcut_steps))))
 
 t = np.concatenate((store_t_precut, t_postcut))
 t_relative_to_cut = t - cut_time

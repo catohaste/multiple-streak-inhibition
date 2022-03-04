@@ -6,12 +6,22 @@ from matplotlib.collections import PatchCollection
 import matplotlib
 from mpl_toolkits.axes_grid1 import make_axes_locatable
 from mpl_toolkits.axes_grid1.colorbar import colorbar
+from copy import copy
 
 def create_animated_output(number_of_cells, sample_rate, t, a, b, v, c, params, save_directory):
     
     a_over_time = a
     
-    nodal_count = np.sum(a, axis=0)
+    timepoints_N = a.shape[1]
+    nodal_count = np.zeros((timepoints_N,),dtype=int)
+    for col_idx in range(timepoints_N):
+        unique, counts = np.unique(a[:,col_idx], return_counts=True)
+        count_dict = dict(zip(unique, counts))
+        try:
+            one_count = count_dict[1.0]
+        except KeyError:
+            one_count = 0
+        nodal_count[col_idx] = one_count
     
     number_of_frames = int(len(t) / sample_rate)
 
@@ -31,10 +41,12 @@ def create_animated_output(number_of_cells, sample_rate, t, a, b, v, c, params, 
     # ax_c.set_title('calcium')
 
     a_ymax = np.max(a)*1.5 # 0.01
+    c_ymax = 10
+    ant_c_ymax = (10/11) * c_ymax
 
     ax_a.set_ylim([0,a_ymax])
     ax_b.set_ylim([0,np.max(b)*1.1])
-    ax_c.set_ylim([0,10])
+    ax_c.set_ylim([0,c_ymax])
     # ax_c.set_ylim([0,np.max(c)*1.1])
     ax_v.set_ylim([0,np.max(v)*1.1])
     
@@ -62,8 +74,7 @@ def create_animated_output(number_of_cells, sample_rate, t, a, b, v, c, params, 
     
     ant_a, = ax_a.plot( ant_x, [0,np.max(a)], lw=1, c='k', linestyle='dashed')
     ant_b, = ax_b.plot( ant_x, [0,np.max(b)], lw=1, c='k', linestyle='dashed')
-    ant_c, = ax_c.plot( ant_x, [0,10], lw=1, c='k', linestyle='dashed')
-    # ant_c, = ax_c.plot( ant_x, [0,np.max(c)], lw=1, c='k', linestyle='dashed')
+    ant_c, = ax_c.plot( ant_x, [0,ant_c_ymax], lw=1, c='k', linestyle='dashed')
     ant_v, = ax_v.plot( ant_x, [0,np.max(v)], lw=1, c='k', linestyle='dashed')
     
     threshold_streak_line, = ax_b.plot( [0, number_of_cells - 1],threshold_streak, lw=1, c='C0', linestyle='dashed')
@@ -217,7 +228,11 @@ def create_animated_output_extra_calcium(number_of_cells, sample_rate, t, a, b, 
     
     return
 
-def create_stills_array(time_indices, number_of_cells, t, a, b, v, c, filename):
+def create_stills_array(time_indices, number_of_cells, t, a, b, v, c, params, filename):
+    
+    matplotlib.rcParams['font.family'] = 'sans-serif'
+    # matplotlib.rcParams['font.sans-serif'] = ['Arial']
+    matplotlib.rcParams['font.sans-serif'] = ['Clear Sans']
     
     timepointsN = len(time_indices)
 
@@ -255,18 +270,25 @@ def create_stills_array(time_indices, number_of_cells, t, a, b, v, c, filename):
         ax_b.set_xticklabels([])
         ax_v.set_xticklabels([])
         ax_c.set_xticklabels(['P', 'A', 'P'])
+        
+        b_x_min, b_x_max = ax_b.get_xlim()
 
         ax_c.set_xlabel("Cell position")
 
         ant_x = [anterior_cell, anterior_cell]
+        thresh_v_b = [params["v_b_threshold"], params["v_b_threshold"]]
+        thresh_c_b = [params["c_b_threshold"], params["c_b_threshold"]]
 
         ant_a, = ax_a.plot( ant_x, [0,np.max(a)], lw=0.5, c='k', linestyle='dashed')
         ant_b, = ax_b.plot( ant_x, [0,np.max(b)], lw=0.5, c='k', linestyle='dashed')
         ant_c, = ax_c.plot( ant_x, [0,np.max(c)], lw=0.5, c='k', linestyle='dashed')
         ant_v, = ax_v.plot( ant_x, [0,np.max(v)], lw=0.5, c='k', linestyle='dashed')
+        
+        line_thresh_v_b, = ax_b.plot( [b_x_min,b_x_max], thresh_v_b, lw=1, c='C9', linestyle='dashed')
+        line_thresh_c_b, = ax_b.plot( [b_x_min,b_x_max], thresh_c_b, lw=1, c='C0', linestyle='dashed')
 
         line_a, = ax_a.plot( a[:,time_idx], lw=2, c='C0', label='NODAL')
-        line_b, = ax_b.plot( b[:,time_idx], lw=2, c='C3', label='BMP4')
+        line_b, = ax_b.plot( b[:,time_idx], lw=2, c='C3', label='cBMP4')
         line_c, = ax_c.plot( c[:,time_idx], lw=2, c='C1',label='Ca2+')
         line_v, = ax_v.plot( v[:,time_idx], lw=2, c='C9',label='cVG1')
         
@@ -358,25 +380,52 @@ def create_circle_animation(var, save_directory):
 
     anim.save(save_directory + 'circle' + '.mp4', fps=frames_per_second, extra_args=['-vcodec', 'libx264'])
 
+# def add_colormaps(var):
+#
+#     grey_proportion = 1 / (np.max(var) + 1)
+#     color_proportion = np.max(var) / (np.max(var) + 1)
+#
+#     cmap_pointsN = 256
+#
+#     grey_pointsN = np.floor(grey_proportion * cmap_pointsN)
+#     color_pointsN = np.ceil(color_proportion * cmap_pointsN)
+#
+#     grey_points = numpy.linspace(-1, 0, num=50, endpoint=False)
+#     color_points = numpy.linspace(0, , num=50, endpoint=True)
+#
+#     # sample the colormaps that you want to use. Use 128 from each so we get 256
+#     # colors in total
+#     colors1 = plt.cm.binary(np.linspace(0., 1, 128))
+#     colors2 = plt.cm.gist_heat_r(np.linspace(0, 1, 128))
+#
+#     # combine them and build a new colormap
+#     colors = np.vstack((colors1, colors2))
+#     mymap = mcolors.LinearSegmentedColormap.from_list('my_colormap', colors)
+#
+#     plt.pcolor(data, cmap=mymap)
+#     plt.colorbar()
+#     plt.show()
+
 def concentric_circle_animation(t, a, b, c, v, save_directory):
 
     number_of_cells = a.shape[0]
     number_of_steps = a.shape[1] # timesteps
     
     a_max = np.amax(a)
-    a_min = np.amin(a)
+    a_min = 0
 
     b_max = np.amax(b)
-    b_min = np.amin(b)
+    b_min = 0
     
     c_max = np.amax(c)
-    c_min = np.amin(c)
+    c_min = 0
     
     v_max = np.amax(v)
-    v_min = np.amin(v)
+    v_min = 0
 
     fig = plt.figure()
-    ax = fig.add_subplot(111)
+    ax = fig.add_subplot(122)
+    ax_bmp = fig.add_subplot(121)
 
     ax.set_ylim([1,-1])
     ax.set_xlim([1,-1])
@@ -388,6 +437,17 @@ def concentric_circle_animation(t, a, b, c, v, save_directory):
     ax.set_yticks([])
     ax.plot([-1,1],[0,0],linestyle='dashed', linewidth=0.5, c='k')
     ax.plot([0,0],[-1,1],linestyle='dashed', linewidth=0.5, c='k')
+    
+    ax_bmp.set_ylim([1,-1])
+    ax_bmp.set_xlim([1,-1])
+
+    ax_bmp.set_aspect('equal')
+    # ax.axis('off')
+    ax_bmp.set_facecolor('C7')
+    ax_bmp.set_xticks([])
+    ax_bmp.set_yticks([])
+    ax_bmp.plot([-1,1],[0,0],linestyle='dashed', linewidth=0.5, c='k')
+    ax_bmp.plot([0,0],[-1,1],linestyle='dashed', linewidth=0.5, c='k')
 
     theta_list = np.linspace(90 , 450, 101)
     a_patches = []
@@ -395,48 +455,65 @@ def concentric_circle_animation(t, a, b, c, v, save_directory):
     c_patches = []
     v_patches = []
     for i in range(len(theta_list) - 1):
-        a_patches.append(Wedge((0,0), 0.8, theta_list[i], theta_list[i+1], width=0.1))
-        b_patches.append(Wedge((0,0), 0.65, theta_list[i], theta_list[i+1], width=0.1))
-        c_patches.append(Wedge((0,0), 0.8, theta_list[i], theta_list[i+1], width=0.1))
-        v_patches.append(Wedge((0,0), 0.8, theta_list[i], theta_list[i+1], width=0.1))
+        a_patches.append(Wedge((0,0), 0.75, theta_list[i], theta_list[i+1], width=0.08))
+        b_patches.append(Wedge((0,0), 0.85, theta_list[i], theta_list[i+1], width=0.25))
+        c_patches.append(Wedge((0,0), 0.65, theta_list[i], theta_list[i+1], width=0.08))
+        v_patches.append(Wedge((0,0), 0.85, theta_list[i], theta_list[i+1], width=0.08))
 
     a_patch_col = PatchCollection(a_patches)
     a_colors = a[:,0]
     a_patch_col.set_array(np.array(a_colors))
     a_patch_col.set_clim(vmin=a_min, vmax=a_max)
-    a_patch_col.set_cmap('viridis')
+    a_patch_col.set_cmap('Purples')
+    a_cm = copy(a_patch_col.get_cmap())
+    a_cm.set_under('C7')
+    a_patch_col.set_cmap(a_cm)
     
     b_patch_col = PatchCollection(b_patches)
     b_colors = b[:,0]
     b_patch_col.set_array(np.array(b_colors))
     b_patch_col.set_clim(vmin=b_min, vmax=b_max)
     b_patch_col.set_cmap('viridis')
+    b_cm = copy(b_patch_col.get_cmap())
+    b_cm.set_under('C7')
+    b_patch_col.set_cmap(b_cm)
     
     c_patch_col = PatchCollection(c_patches)
     c_colors = c[:,0]
     c_patch_col.set_array(np.array(c_colors))
     c_patch_col.set_clim(vmin=c_min, vmax=c_max)
-    c_patch_col.set_cmap('inferno')
+    c_patch_col.set_cmap('Oranges')
+    c_cm = copy(c_patch_col.get_cmap())
+    c_cm.set_under('C7')
+    c_patch_col.set_cmap(c_cm)
     
     v_patch_col = PatchCollection(v_patches)
     v_colors = v[:,0]
     v_patch_col.set_array(np.array(v_colors))
     v_patch_col.set_clim(vmin=v_min, vmax=v_max)
-    v_patch_col.set_cmap('viridis')
+    v_patch_col.set_cmap('Blues')
+    v_cm = copy(v_patch_col.get_cmap())
+    v_cm.set_under('C7')
+    v_patch_col.set_cmap(v_cm)
     
+    ax.add_collection(a_patch_col)
     ax.add_collection(c_patch_col)
-    ax.add_collection(b_patch_col)
+    ax.add_collection(v_patch_col)
     
-    divider = make_axes_locatable(ax)
-    b_cax = divider.append_axes("right", size="5%", pad=0.05)
-    b_cb = fig.colorbar(b_patch_col, cax=b_cax, orientation='vertical')
+    ax_bmp.add_collection(b_patch_col)
     
-    c_cax = divider.append_axes("left", size="5%", pad=0.05)
-    c_cb = colorbar(c_patch_col, cax=c_cax, orientation="vertical")
-    # c_cb = plt.colorbar(c_patch_col, cax=c_cax, orientation="vertical")
-    # c_cb = fig.colorbar(c_patch_col, cax=c_cax, orientation="vertical")
-    c_cax.yaxis.set_ticks_position("left")
+    """ colorbars """
+    # divider = make_axes_locatable(ax)
+    # b_cax = divider.append_axes("right", size="5%", pad=0.05)
+    # b_cb = fig.colorbar(b_patch_col, cax=b_cax, orientation='vertical', label='BMP4')
+    #
+    # c_cax = divider.append_axes("left", size="5%", pad=0.05)
+    # c_cb = colorbar(c_patch_col, cax=c_cax, orientation="vertical")
+    # # c_cb = plt.colorbar(c_patch_col, cax=c_cax, orientation="vertical")
+    # # c_cb = fig.colorbar(c_patch_col, cax=c_cax, orientation="vertical")
+    # c_cax.yaxis.set_ticks_position("left")
     
+    """ time string """
     # ax.text(-0.9, 0.5, label_string, fontsize=20)
     #
     # current_time = 0
@@ -445,6 +522,10 @@ def concentric_circle_animation(t, a, b, c, v, save_directory):
     # time_text.set_text(time_string)
 
     def init():
+        a_colors = a[:,0]
+        a_patch_col.set_array(np.array(a_colors))
+        a_patch_col.set_clim(vmin=a_min, vmax=a_max)
+        
         b_colors = b[:,0]
         b_patch_col.set_array(np.array(b_colors))
         b_patch_col.set_clim(vmin=b_min, vmax=b_max)
@@ -452,11 +533,19 @@ def concentric_circle_animation(t, a, b, c, v, save_directory):
         c_colors = c[:,0]
         c_patch_col.set_array(np.array(c_colors))
         c_patch_col.set_clim(vmin=c_min, vmax=c_max)
-        return b_patch_col, c_patch_col, 
+        
+        v_colors = c[:,0]
+        v_patch_col.set_array(np.array(v_colors))
+        v_patch_col.set_clim(vmin=v_min, vmax=v_max)
+        return a_patch_col, b_patch_col, c_patch_col, v_patch_col, 
 
     sample_rate = 2
     def animate(i):
         sample_rate = 2
+        a_colors = a[:,sample_rate * i]
+        a_patch_col.set_array(np.array(a_colors))
+        a_patch_col.set_clim(vmin=a_min, vmax=a_max)
+        
         b_colors = b[:,sample_rate * i]
         b_patch_col.set_array(np.array(b_colors))
         b_patch_col.set_clim(vmin=b_min, vmax=b_max)
@@ -464,7 +553,11 @@ def concentric_circle_animation(t, a, b, c, v, save_directory):
         c_colors = c[:,sample_rate * i]
         c_patch_col.set_array(np.array(c_colors))
         c_patch_col.set_clim(vmin=c_min, vmax=c_max)
-        return b_patch_col, c_patch_col, 
+        
+        v_colors = v[:,sample_rate * i]
+        v_patch_col.set_array(np.array(v_colors))
+        v_patch_col.set_clim(vmin=v_min, vmax=v_max)
+        return a_patch_col, b_patch_col, c_patch_col, v_patch_col, 
 
 
     number_of_frames = int(np.ceil(number_of_steps / sample_rate))

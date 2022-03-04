@@ -23,6 +23,8 @@ v = pickle.load( open(pickle_directory + 'v.p','rb') )
 ########################################################################################
 """ Create animated output """
 
+# create_animated_output(number_of_cells, 1, t, a, b, v, c, params, save_directory)
+
 # create_animated_output_extra_calcium(number_of_cells, 1, t, a, b, v, c, params, save_directory)
 
 concentric_circle_animation(t, a, b, c, v, save_directory)

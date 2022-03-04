@@ -31,8 +31,8 @@ now = datetime.now()
 date_time_str = 'results/' + now.strftime("%Y_%m_%d_%H%M") + '/'
 
 # save_directory = date_time_str
-save_directory = 'results/testing/'
 # save_directory = 'results/testing/'
+save_directory = 'results/**_asymmetric_cut/remove_35L_24R/'
 if not os.path.isdir(save_directory):
     os.mkdir(save_directory)
     
@@ -52,10 +52,10 @@ for filename in filenames:
 
 number_of_cells_precut = 100
 dx = 0.094248
-left_post_cut = 36
-right_post_cut = 34
-# left_post_cut = 35
+# left_post_cut = 26
 # right_post_cut = 24
+left_post_cut = 35
+right_post_cut = 24
 dt = 0.0001 # /4
 sample_rate = 200
 
@@ -189,6 +189,8 @@ pickle.dump( v, open(pickle_directory + 'v.p','wb') )
 """ Create animated output """
 
 create_animated_output(number_of_cells_precut, 1, t_relative_to_cut, a, b, v, c, params, save_directory)
+
+# concentric_circle_animation(t, a, b, c, v, save_directory)
 
 total_end = time.time()
 print("Total time consumed in working: ", total_end - total_start)

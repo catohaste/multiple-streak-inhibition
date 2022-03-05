@@ -8,7 +8,7 @@ from mpl_toolkits.axes_grid1 import make_axes_locatable
 from mpl_toolkits.axes_grid1.colorbar import colorbar
 from copy import copy
 
-def create_animated_output(number_of_cells, sample_rate, t, a, b, v, c, params, save_directory):
+def create_animated_output(number_of_cells, t, a, b, v, c, params, save_directory):
     
     a_over_time = a
     
@@ -23,7 +23,9 @@ def create_animated_output(number_of_cells, sample_rate, t, a, b, v, c, params, 
             one_count = 0
         nodal_count[col_idx] = one_count
     
-    number_of_frames = int(len(t) / sample_rate)
+    number_of_frames = timepoints_N
+    
+    sample_rate = int(round(len(t) / timepoints_N))
 
     # fig = plt.figure(figsize=(4,8))
  #
@@ -110,12 +112,12 @@ def create_animated_output(number_of_cells, sample_rate, t, a, b, v, c, params, 
         nodal_text.set_text('Nodal cells: ')
         return line_a, line_b, line_c, line_v, time_text, nodal_text,
     def animate(i):
-        line_a.set_data(range(number_of_cells), a_over_time[:,i * sample_rate])
-        line_b.set_data(range(number_of_cells), b[:,i * sample_rate])
-        line_c.set_data(range(number_of_cells), c[:,i * sample_rate])
-        line_v.set_data(range(number_of_cells), v[:,i * sample_rate])
-        time_text.set_text('t = ' + "{:.1f}".format(t[i * sample_rate]) +'h')
-        nodal_text.set_text('Nodal cells: ' + str(int(nodal_count[i * sample_rate])))
+        line_a.set_data(range(number_of_cells), a_over_time[:,i])
+        line_b.set_data(range(number_of_cells), b[:,i])
+        line_c.set_data(range(number_of_cells), c[:,i])
+        line_v.set_data(range(number_of_cells), v[:,i])
+        time_text.set_text('t = ' + "{:.1f}".format(t[i*sample_rate]) +'h')
+        nodal_text.set_text('Nodal cells: ' + str(int(nodal_count[i])))
         return line_a, line_b, line_c, line_v, time_text, nodal_text,
 
     anim = FuncAnimation(fig, animate, init_func=init, frames=number_of_frames, blit=False)

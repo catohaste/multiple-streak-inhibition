@@ -31,8 +31,8 @@ now = datetime.now()
 date_time_str = 'results/' + now.strftime("%Y_%m_%d_%H%M") + '/'
 
 # save_directory = date_time_str
-# save_directory = 'results/testing/'
-save_directory = 'results/**_asymmetric_cut/remove_35L_24R/'
+save_directory = 'results/testing/'
+# save_directory = 'results/**_asymmetric_cut/remove_35L_24R/'
 if not os.path.isdir(save_directory):
     os.mkdir(save_directory)
     
@@ -94,15 +94,14 @@ number_of_timepoints_precut = len(t_precut)
 store_t_precut = t_precut[::sample_rate]
 store_timepoints_precut = len(store_t_precut)
 # print(number_of_timepoints_precut, store_timepoints_precut)
-# print(store_t_precut[-1])
+# print(store_t_precut[0], store_t_precut[-1])
 
 t_postcut = np.append(np.arange(cut_time, total_time, dt), total_time)
 number_of_timepoints_postcut = len(t_postcut)
 store_t_postcut = t_postcut[::sample_rate]
 store_timepoints_postcut = len(store_t_postcut)
 # print(number_of_timepoints_postcut, store_timepoints_postcut)
-# print(store_t_postcut[-1])
-
+# print(store_t_postcut[0], store_t_postcut[-1])
 
 ########################################################################################
 """ BEFORE CUT """
@@ -142,6 +141,7 @@ print(anterior_half, number_of_cells_postcut)
 
 start = time.time()
 
+# "short" refers to number of cells present. arrays do not include cells removed at cut
 a_postcut_short, b_postcut_short, c_postcut_short, v_postcut_short = solve_ivp_odes(number_of_cells_postcut, number_of_timepoints_postcut, dt, dx, a_atcut, b_atcut, c_atcut, v_atcut, calcium_no_flux_boundary, params, sample_rate)
 
 end = time.time()
@@ -154,11 +154,15 @@ print("Time consumed solving postcut: ",end - start)
 t_postcut = store_t_postcut[1:]
 postcut_steps = len(t_postcut)
 
+# add zeros in-place of the cells removed at cut
+# also removes first timepoint
 # a_postcut = np.concatenate((np.zeros((left_post_cut,postcut_steps)), a_postcut_short[:,1:], np.zeros((right_post_cut,postcut_steps))))
 # b_postcut = np.concatenate((np.zeros((left_post_cut,postcut_steps)), b_postcut_short[:,1:], np.zeros((right_post_cut,postcut_steps))))
 # c_postcut = np.concatenate((np.zeros((left_post_cut,postcut_steps)), c_postcut_short[:,1:], np.zeros((right_post_cut,postcut_steps))))
 # v_postcut = np.concatenate((np.zeros((left_post_cut,postcut_steps)), v_postcut_short[:,1:], np.zeros((right_post_cut,postcut_steps))))
 
+# add -1s in-place of the cells removed at cut
+# also removes first timepoint
 a_postcut = np.concatenate((-1 * np.ones((left_post_cut,postcut_steps)), a_postcut_short[:,1:], -1 * np.ones((right_post_cut,postcut_steps))))
 b_postcut = np.concatenate((-1 * np.ones((left_post_cut,postcut_steps)), b_postcut_short[:,1:], -1 * np.ones((right_post_cut,postcut_steps))))
 c_postcut = np.concatenate((-1 * np.ones((left_post_cut,postcut_steps)), c_postcut_short[:,1:], -1 * np.ones((right_post_cut,postcut_steps))))

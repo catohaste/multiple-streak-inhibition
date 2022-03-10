@@ -26,6 +26,10 @@ def create_animated_output(number_of_cells, t, a, b, v, c, params, save_director
     number_of_frames = timepoints_N
     
     sample_rate = int(round(len(t) / timepoints_N))
+    
+    # print('sample_rate = ' + str(sample_rate))
+    # print('t shape = ' + str(t.shape))
+    # print('a shape = ' + str(a.shape))
 
     # fig = plt.figure(figsize=(4,8))
  #
@@ -116,7 +120,8 @@ def create_animated_output(number_of_cells, t, a, b, v, c, params, save_director
         line_b.set_data(range(number_of_cells), b[:,i])
         line_c.set_data(range(number_of_cells), c[:,i])
         line_v.set_data(range(number_of_cells), v[:,i])
-        time_text.set_text('t = ' + "{:.1f}".format(t[i*sample_rate]) +'h')
+        time_text.set_text('t = ' + "{:.1f}".format(t[i]) +'h')
+        # time_text.set_text('t = ' + "{:.1f}".format(t[i*sample_rate]) +'h')
         nodal_text.set_text('Nodal cells: ' + str(int(nodal_count[i])))
         return line_a, line_b, line_c, line_v, time_text, nodal_text,
 

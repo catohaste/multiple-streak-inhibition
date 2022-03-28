@@ -31,8 +31,9 @@ now = datetime.now()
 date_time_str = 'results/' + now.strftime("%Y_%m_%d_%H%M") + '/'
 
 # save_directory = date_time_str
-save_directory = 'results/add_bmp_bead/'
-# save_directory = 'results/testing/'
+# save_directory = 'results/add_bmp_bead/'
+# save_directory = 'results/add_vg1_bead/'
+save_directory = 'results/testing/'
 if not os.path.isdir(save_directory):
     os.mkdir(save_directory)
     
@@ -43,7 +44,7 @@ code_directory = save_directory + 'code/'
 if not os.path.isdir(code_directory):
     os.mkdir(code_directory)
 
-filenames = ['add_bmp.py', 'params.py', 'models.py', 'plot.py']
+filenames = ['add_bead.py', 'params.py', 'models.py', 'plot.py']
 for filename in filenames:
     copy2(filename, code_directory + filename)
 
@@ -58,6 +59,14 @@ sample_rate = 200
 bead_center = 46
 bead_half_width = 2 # doesn't include centre cell { bead_half_width = (bead_width - 1) / 2 }
 bead_concentration = 0.2
+
+def add_bead(bead_var_atbead, bead_center, bead_half_width, bead_concentration):
+    bead_cells = list(range(bead_center - bead_half_width, bead_center + bead_half_width + 1))
+    for bead_cell in bead_cells:
+        bead_var_atbead[bead_cell] = bead_var_atbead[bead_cell] + bead_concentration
+        
+    return bead_var_atbead
+    
 
 # number_of_cells = 748
 # dx = 0.0126
@@ -75,23 +84,23 @@ bead_concentration = 0.2
 start_time = 0
 # total_time = 20
 # bead_time = 2.4
-total_time = 5
-bead_time = 0.1
+total_time = 10
+bead_time = 1.2
 postbead_time = total_time - bead_time
 
 t_prebead = np.append(np.arange(0, bead_time, dt), bead_time)
 number_of_timepoints_prebead = len(t_prebead)
 store_t_prebead = t_prebead[::sample_rate]
 store_timepoints_prebead = len(store_t_prebead)
-print(number_of_timepoints_prebead, store_timepoints_prebead)
-print(store_t_prebead[0], store_t_prebead[-1])
+# print(number_of_timepoints_prebead, store_timepoints_prebead)
+# print(store_t_prebead[0], store_t_prebead[-1])
 
 t_postbead = np.append(np.arange(bead_time, total_time, dt), total_time)
 number_of_timepoints_postbead = len(t_postbead)
 store_t_postbead = t_postbead[::sample_rate]
 store_timepoints_postbead = len(store_t_postbead)
-print(number_of_timepoints_postbead, store_timepoints_postbead)
-print(store_t_postbead[0], store_t_postbead[-1])
+# print(number_of_timepoints_postbead, store_timepoints_postbead)
+# print(store_t_postbead[0], store_t_postbead[-1])
 
 
 ########################################################################################
@@ -104,6 +113,8 @@ v0 = np.zeros((number_of_cells), dtype=float)
 b0 = np.zeros((number_of_cells), dtype=float)
 b_min = 1.1
 b_max = 1.3
+# b_min = 1.1
+# b_max = 2.2
 for i in range(int(number_of_cells/2)):
     j = number_of_cells - i - 1
     b0[i] = ((b_max - b_min)/number_of_cells) * 2 * i + b_min
@@ -125,10 +136,14 @@ b_atbead = b_prebead[:, -1]
 c_atbead = c_prebead[:, -1]
 v_atbead = v_prebead[:, -1]
 
-# Place bead
-bead_cells = list(range(bead_center - bead_half_width, bead_center + bead_half_width + 1))
-for bead_cell in bead_cells:
-    b_atbead[bead_cell] = b_atbead[bead_cell] + bead_concentration
+# Place bmp bead
+# b_atbead = add_bead(b_atbead, bead_center, bead_half_width, bead_concentration)
+
+# Place DM bead
+# b_atbead = add_bead(b_atbead, bead_center, bead_half_width, -bead_concentration)
+
+# Place vg1 bead
+v_atbead = add_bead(v_atbead, bead_center, 1, 1.0)
 
 start = time.time()
 

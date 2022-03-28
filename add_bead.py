@@ -142,8 +142,11 @@ v_atbead = v_prebead[:, -1]
 # Place DM bead
 # b_atbead = add_bead(b_atbead, bead_center, bead_half_width, -bead_concentration)
 
+# Place ionomycin bead
+c_atbead = add_bead(c_atbead, bead_center, bead_half_width, -5.0)
+
 # Place vg1 bead
-v_atbead = add_bead(v_atbead, bead_center, 1, 1.0)
+# v_atbead = add_bead(v_atbead, bead_center, 1, 1.0)
 
 start = time.time()
 

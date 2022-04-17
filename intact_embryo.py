@@ -51,12 +51,12 @@ for filename in filenames:
 """ Set 'length' parameters """
 
 number_of_cells = 100
-dx = 0.094248
+dx = 0.094248 # mm
 dt = 0.0001 # /4
-sample_rate = 200
+sample_rate = 200 # sample_rate of variables when pickling
 
 # number_of_cells = 748
-# dx = 0.0126
+# dx = 0.0126 # 0.094248 / 7.48
 # dt = 0.0001/64
 # sample_rate = int(200 * 64)
 # params['k'] = params['k'] * 7.48

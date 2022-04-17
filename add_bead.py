@@ -143,6 +143,7 @@ v_atbead = v_prebead[:, -1]
 # b_atbead = add_bead(b_atbead, bead_center, bead_half_width, -bead_concentration)
 
 # Place ionomycin bead
+# this doesn't work. this implies removing all calcium (at bead location) instantaneously. system quickly requilibrates
 c_atbead = add_bead(c_atbead, bead_center, bead_half_width, -5.0)
 
 # Place vg1 bead

@@ -5,7 +5,7 @@ from matplotlib.patches import Wedge
 from matplotlib.collections import PatchCollection
 import matplotlib
 from mpl_toolkits.axes_grid1 import make_axes_locatable
-from mpl_toolkits.axes_grid1.colorbar import colorbar
+# from mpl_toolkits.axes_grid1.colorbar import colorbar
 from copy import copy
 
 def create_animated_output(number_of_cells, t, a, b, v, c, params, save_directory):
@@ -13,7 +13,7 @@ def create_animated_output(number_of_cells, t, a, b, v, c, params, save_director
     a_over_time = a
     
     timepoints_N = a.shape[1]
-    nodal_count = np.zeros((timepoints_N,),dtype=int)
+    streak_count = np.zeros((timepoints_N,),dtype=int)
     for col_idx in range(timepoints_N):
         unique, counts = np.unique(a[:,col_idx], return_counts=True)
         count_dict = dict(zip(unique, counts))
@@ -21,7 +21,7 @@ def create_animated_output(number_of_cells, t, a, b, v, c, params, save_director
             one_count = count_dict[1.0]
         except KeyError:
             one_count = 0
-        nodal_count[col_idx] = one_count
+        streak_count[col_idx] = one_count
     
     number_of_frames = timepoints_N
     
@@ -86,7 +86,7 @@ def create_animated_output(number_of_cells, t, a, b, v, c, params, save_director
     threshold_streak_line, = ax_b.plot( [0, number_of_cells - 1],threshold_streak, lw=1, c='C0', linestyle='dashed')
     threshold_vg1_line, = ax_b.plot( [0, number_of_cells - 1], threshold_vg1, lw=1, c='C9', linestyle='dashed')
 
-    line_a, = ax_a.plot( a_over_time[:,0], lw=3, c='C0', label='NODAL')
+    line_a, = ax_a.plot( a_over_time[:,0], lw=3, c='C0', label="'Streak'")
     line_b, = ax_b.plot( b[:,0], lw=3, c='C3', label='BMP4')
     line_c, = ax_c.plot( c[:,0], lw=3, c='C1',label='Ca2+\nactivity')
     line_v, = ax_v.plot( v[:,0], lw=3, c='C9',label='cVG1')
@@ -94,9 +94,9 @@ def create_animated_output(number_of_cells, t, a, b, v, c, params, save_director
     time_x_loc = number_of_cells/3
     time_y_loc = 0.87*a_ymax
     time_text = ax_a.text(time_x_loc, time_y_loc,'t = ', fontsize=16)
-    nodal_x_loc = (number_of_cells/3) - (number_of_cells * 0.03)
-    nodal_y_loc = 0.73*a_ymax
-    nodal_text = ax_a.text(nodal_x_loc, nodal_y_loc,'NODAL cells: ', fontsize=12)
+    streak_x_loc = (number_of_cells/3) - (number_of_cells * 0.03)
+    streak_y_loc = 0.73*a_ymax
+    # streak_text = ax_a.text(streak_x_loc, streak_y_loc,'Streak cells: ', fontsize=12)
 
     ax_a.legend(loc=2)
     ax_b.legend(loc=2)
@@ -108,22 +108,22 @@ def create_animated_output(number_of_cells, t, a, b, v, c, params, save_director
     # plt.show()
 
     def init():
-        line_a, = ax_a.plot([],[], lw=3, c='C0', label='NODAL')
+        line_a, = ax_a.plot([],[], lw=3, c='C0', label="'Streak'")
         line_b, = ax_b.plot([],[], lw=3, c='C3', label='BMP4')
         line_c, = ax_c.plot([],[],lw=3, c='C1',label='Ca2+\nactivity')
         line_v, = ax_v.plot([],[],lw=3, c='C9',label='cVG1')
         time_text.set_text('t = ')
-        nodal_text.set_text('Nodal cells: ')
-        return line_a, line_b, line_c, line_v, time_text, nodal_text,
+        # streak_text.set_text('Streak cells: ')
+        return line_a, line_b, line_c, line_v, time_text, # streak text,
     def animate(i):
         line_a.set_data(range(number_of_cells), a_over_time[:,i])
         line_b.set_data(range(number_of_cells), b[:,i])
         line_c.set_data(range(number_of_cells), c[:,i])
         line_v.set_data(range(number_of_cells), v[:,i])
-        time_text.set_text('t = ' + "{:.1f}".format(t[i]) +'h')
-        # time_text.set_text('t = ' + "{:.1f}".format(t[i*sample_rate]) +'h')
-        nodal_text.set_text('Nodal cells: ' + str(int(nodal_count[i])))
-        return line_a, line_b, line_c, line_v, time_text, nodal_text,
+        # time_text.set_text('t = ' + "{:.1f}".format(t[i]) +'h')
+        time_text.set_text('t = ' + "{:.1f}".format(t[i*sample_rate]) +'h')
+        # streak_text.set_text('Streak cells: ' + str(int(streak_count[i])))
+        return line_a, line_b, line_c, line_v, time_text, # streak text,
 
     anim = FuncAnimation(fig, animate, init_func=init, frames=number_of_frames, blit=False)
 
@@ -135,7 +135,7 @@ def create_animated_output_extra_calcium(number_of_cells, sample_rate, t, a, b, 
     
     a_over_time = a
     
-    nodal_count = np.sum(a, axis=0)
+    streak_count = np.sum(a, axis=0)
     
     number_of_frames = int(len(t) / sample_rate)
     
@@ -185,7 +185,7 @@ def create_animated_output_extra_calcium(number_of_cells, sample_rate, t, a, b, 
     threshold_streak_line, = ax_b.plot( [0, number_of_cells - 1],threshold_streak, lw=1, c='C0', linestyle='dashed')
     threshold_vg1_line, = ax_b.plot( [0, number_of_cells - 1], threshold_vg1, lw=1, c='C9', linestyle='dashed')
 
-    line_a, = ax_a.plot( a_over_time[:,0], lw=3, c='C0', label='NODAL')
+    line_a, = ax_a.plot( a_over_time[:,0], lw=3, c='C0', label="'Streak'")
     line_b, = ax_b.plot( b[:,0], lw=3, c='C3', label='BMP4')
     line_c_low, = ax_c_low.plot( c[:,0], lw=3, c='C1',label='Ca2+\nactivity')
     line_c_high, = ax_c_high.plot( c[:,0], lw=3, c='C1',label='Ca2+\nactivity')
@@ -196,9 +196,9 @@ def create_animated_output_extra_calcium(number_of_cells, sample_rate, t, a, b, 
     time_x_loc = text_x_loc
     time_y_loc = 0.85*a_ymax
     time_text = ax_a.text(time_x_loc, time_y_loc,'t = ', fontsize=14)
-    nodal_x_loc = text_x_loc - number_of_cells*0.05
-    nodal_y_loc = 0.74*a_ymax
-    nodal_text = ax_a.text(nodal_x_loc, nodal_y_loc,'NODAL cells: ', fontsize=10)
+    streak_x_loc = text_x_loc - number_of_cells*0.05
+    streak_y_loc = 0.74*a_ymax
+    streak_text = ax_a.text(streak_x_loc, streak_y_loc,'Streak cells: ', fontsize=10)
 
     ax_a.legend(loc=2)
     ax_b.legend(loc=2)
@@ -211,14 +211,14 @@ def create_animated_output_extra_calcium(number_of_cells, sample_rate, t, a, b, 
     # plt.show()
 
     def init():
-        line_a, = ax_a.plot([],[], lw=3, c='C0', label='NODAL')
+        line_a, = ax_a.plot([],[], lw=3, c='C0', label="'Streak'")
         line_b, = ax_b.plot([],[], lw=3, c='C3', label='BMP4')
         line_c_low, = ax_c_low.plot([],[],lw=3, c='C1',label='Ca2+\nactivity')
         line_c_high, = ax_c_high.plot([],[],lw=3, c='C1',label='Ca2+\nactivity')
         line_v, = ax_v.plot([],[],lw=3, c='C9',label='cVG1')
         time_text.set_text('t = ')
-        nodal_text.set_text('Nodal cells: ')
-        return line_a, line_b, line_c_low, line_c_high, line_v, time_text, nodal_text,
+        streak_text.set_text('Streak cells: ')
+        return line_a, line_b, line_c_low, line_c_high, line_v, time_text, streak_text,
     def animate(i):
         line_a.set_data(range(number_of_cells), a_over_time[:,i * sample_rate])
         line_b.set_data(range(number_of_cells), b[:,i * sample_rate])
@@ -226,8 +226,8 @@ def create_animated_output_extra_calcium(number_of_cells, sample_rate, t, a, b, 
         line_c_high.set_data(range(number_of_cells), c[:,i * sample_rate])
         line_v.set_data(range(number_of_cells), v[:,i * sample_rate])
         time_text.set_text('t = ' + "{:.1f}".format(t[i * sample_rate]) +'h')
-        nodal_text.set_text('Nodal cells: ' + str(int(nodal_count[i * sample_rate])))
-        return line_a, line_b, line_c_low,line_c_high, line_v, time_text, nodal_text,
+        streak_text.set_text('Streak cells: ' + str(int(streak_count[i * sample_rate])))
+        return line_a, line_b, line_c_low,line_c_high, line_v, time_text, streak_text,
 
     anim = FuncAnimation(fig, animate, init_func=init, frames=number_of_frames, blit=False)
 
@@ -243,7 +243,7 @@ def create_stills_array(time_indices, number_of_cells, t, a, b, v, c, params, fi
     
     timepointsN = len(time_indices)
 
-    nodal_count = np.sum(a, axis=0)
+    streak_count = np.sum(a, axis=0)
     
     a_ymax = np.max(a)*1.1
     b_ymax = np.max(b)*1.1
@@ -294,7 +294,7 @@ def create_stills_array(time_indices, number_of_cells, t, a, b, v, c, params, fi
         line_thresh_v_b, = ax_b.plot( [b_x_min,b_x_max], thresh_v_b, lw=1, c='C9', linestyle='dashed')
         line_thresh_c_b, = ax_b.plot( [b_x_min,b_x_max], thresh_c_b, lw=1, c='C0', linestyle='dashed')
 
-        line_a, = ax_a.plot( a[:,time_idx], lw=2, c='C0', label='NODAL')
+        line_a, = ax_a.plot( a[:,time_idx], lw=2, c='C0', label="'Streak'")
         line_b, = ax_b.plot( b[:,time_idx], lw=2, c='C3', label='cBMP4')
         line_c, = ax_c.plot( c[:,time_idx], lw=2, c='C1',label='Ca2+')
         line_v, = ax_v.plot( v[:,time_idx], lw=2, c='C9',label='cVG1')
@@ -305,7 +305,7 @@ def create_stills_array(time_indices, number_of_cells, t, a, b, v, c, params, fi
         if col_idx == 0:
             ax_a.set_yticklabels(['OFF','ON'])
             
-            ax_a.set_ylabel('NODAL', fontweight='bold')
+            ax_a.set_ylabel("'Streak'", fontweight='bold')
             ax_b.set_ylabel('BMP4\n', fontweight='bold')
             ax_c.set_ylabel('Ca2+\nactivity', fontweight='bold')
             ax_v.set_ylabel('cVG1\n', fontweight='bold')
@@ -325,7 +325,6 @@ def create_stills_array(time_indices, number_of_cells, t, a, b, v, c, params, fi
     plt.tight_layout()
     
     fig.savefig(filename, dpi=300, orientation='portrait', format='png') #, transparent=True)
-    
 
 def create_circle_animation(var, save_directory):
 
@@ -398,7 +397,7 @@ def create_circle_animation(var, save_directory):
 #     color_pointsN = np.ceil(color_proportion * cmap_pointsN)
 #
 #     grey_points = numpy.linspace(-1, 0, num=50, endpoint=False)
-#     color_points = numpy.linspace(0, , num=50, endpoint=True)
+#     color_points = numpy.linspace(0, 1, num=50, endpoint=True) # not sure 1 here is what you want
 #
 #     # sample the colormaps that you want to use. Use 128 from each so we get 256
 #     # colors in total

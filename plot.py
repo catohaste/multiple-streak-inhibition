@@ -121,7 +121,7 @@ def create_animated_output(number_of_cells, t, a, b, v, c, params, save_director
         line_c.set_data(range(number_of_cells), c[:,i])
         line_v.set_data(range(number_of_cells), v[:,i])
         # time_text.set_text('t = ' + "{:.1f}".format(t[i]) +'h')
-        time_text.set_text('t = ' + "{:.1f}".format(t[i*sample_rate]) +'h')
+        time_text.set_text('t = ' + "{:.2f}".format(t[i*sample_rate]) +'h')
         # streak_text.set_text('Streak cells: ' + str(int(streak_count[i])))
         return line_a, line_b, line_c, line_v, time_text, # streak text,
 

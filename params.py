@@ -8,13 +8,29 @@ params = {
     "gamma_0": 0.3,
     "gamma_c": 0.1,
     "gamma_v": 0.1,
-    "k": 500,
+    "k": 100, # calcium production
     "k_v": 5,
-    "mu": 50,
-    "lambda_const": 5,
+    "mu": 4, # diffusion constant D
+    "lambda_const": 2, # calcium decay
     "lambda_const_v_0": 4,
     "lambda_const_v_b": 0
 }
+
+# params_save_2022_04_18 = {
+#     "c_threshold": 0.01,
+#     "c_b_threshold": 1,
+#     'v_b_threshold': 1.22,
+#     "rho": 1,
+#     "gamma_0": 0.3,
+#     "gamma_c": 0.1,
+#     "gamma_v": 0.1,
+#     "k": 500,
+#     "k_v": 5,
+#     "mu": 50,
+#     "lambda_const": 5,
+#     "lambda_const_v_0": 4,
+#     "lambda_const_v_b": 0
+# }
 
 # params_save = {
 #     "c_threshold": 0.01,

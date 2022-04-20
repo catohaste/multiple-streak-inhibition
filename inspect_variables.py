@@ -11,7 +11,8 @@ from plot import create_animated_output
 
 # save_directory = 'results/100cells/'
 # save_directory = 'results/**_asymmetric_cut/remove_35L_24R/'
-save_directory = 'results/**_intact_embryo/'
+# save_directory = 'results/**_intact_embryo/'
+save_directory = 'results/study_calcium/D_50/'
 
 number_of_cells = 100
 
@@ -69,8 +70,19 @@ print('')
 # 228 == 229
 
 ########################################################################################
+# print("When does calcium reach 95percent equilibrium intact embryo?")
+max_c = np.max(c)
+temp_max_c_95 = 0
+t_idx_counter_95 = 0
+while temp_max_c_95 < (0.99*max_c):
+    temp_max_c_95 = np.max(c[:,t_idx_counter_95])
+    t_idx_counter_95 += 1
+# print(t_idx_counter_95, t[t_idx_counter_95]*time_scaling)
+# print('')
+
+########################################################################################
 print("Verify calcium reached equilibrium")
-t_idx = 227
+t_idx = t_idx_counter - 2
 
 print('Time')
 print(t_idx, t[t_idx])
@@ -83,39 +95,47 @@ print(c[0, t_idx+1], c[49, t_idx+1], c[50, t_idx+1], c[99,t_idx+1])
 print(c[0, t_idx+2], c[49, t_idx+2], c[50, t_idx+2], c[99,t_idx+2])
 
 ########################################################################################
-print("\nWhat is the rate of increase of calcium")
-# choose random cell
-cell_idx = 25
+print("\nHow long to reach equilibrium?")
 
-def get_rate_of_increase(cal, t, cell_idx, t_idx, time_scaling):
-    change_cal = cal[cell_idx, t_idx+1] - cal[cell_idx, t_idx]
-    change_time = t[int((t_idx+1)*time_scaling)] - t[int(t_idx*time_scaling)]
-    return change_cal / change_time
-    
-print('rate', get_rate_of_increase(c, t, 25, ca_zero_idx, time_scaling))
-print('rate', get_rate_of_increase(c, t, 25, 50, time_scaling))
-print('rate', get_rate_of_increase(c, t, 25, 100, time_scaling))
-print('rate', get_rate_of_increase(c, t, 25, 150, time_scaling))
-print('rate', get_rate_of_increase(c, t, 25, 200, time_scaling))
+t_equil = t[int((t_idx_counter-1)*time_scaling) - int(ca_zero_idx*time_scaling)]
+t_equil_95 = t[int((t_idx_counter_95-1)*time_scaling) - int(ca_zero_idx*time_scaling)]
+print('full', t_equil)
+print('95', t_equil_95)
+
+########################################################################################
+# print("\nWhat is the rate of increase of calcium")
+# # choose random cell
+# cell_idx = 25
+#
+# def get_rate_of_increase(cal, t, cell_idx, t_idx, time_scaling):
+#     change_cal = cal[cell_idx, t_idx+1] - cal[cell_idx, t_idx]
+#     change_time = t[int((t_idx+1)*time_scaling)] - t[int(t_idx*time_scaling)]
+#     return change_cal / change_time
+#
+# print('rate', get_rate_of_increase(c, t, 25, ca_zero_idx, time_scaling))
+# print('rate', get_rate_of_increase(c, t, 25, 50, time_scaling))
+# print('rate', get_rate_of_increase(c, t, 25, 100, time_scaling))
+# print('rate', get_rate_of_increase(c, t, 25, 150, time_scaling))
+# print('rate', get_rate_of_increase(c, t, 25, 200, time_scaling))
 
 
 
 ########################################################################################
-print("\nHow long does it take for calcium to increase 5%")
-
-def get_increase_10_percent_time(cal, t, cell_idx, t_idx, time_scaling):
-    start_cal = cal[cell_idx, t_idx]
-    t_inc = 0
-    temp_cal = cal[cell_idx, t_idx + t_inc]
-    while temp_cal < start_cal*1.05:
-        print(start_cal, temp_cal, start_cal*1.05)
-        t_inc += 1
-        temp_cal = cal[cell_idx, t_idx + t_inc]
-    start_time = t[int(t_idx*time_scaling)]
-    end_time = t[int((t_idx+t_inc)*time_scaling)]
-    return t_idx, start_time,  end_time - start_time
-    
-print(get_increase_10_percent_time(c, t, 3, 15, time_scaling))
+# print("\nHow long does it take for calcium to increase 5%")
+#
+# def get_increase_10_percent_time(cal, t, cell_idx, t_idx, time_scaling):
+#     start_cal = cal[cell_idx, t_idx]
+#     t_inc = 0
+#     temp_cal = cal[cell_idx, t_idx + t_inc]
+#     while temp_cal < start_cal*1.05:
+#         print(start_cal, temp_cal, start_cal*1.05)
+#         t_inc += 1
+#         temp_cal = cal[cell_idx, t_idx + t_inc]
+#     start_time = t[int(t_idx*time_scaling)]
+#     end_time = t[int((t_idx+t_inc)*time_scaling)]
+#     return t_idx, start_time,  end_time - start_time
+#
+# print(get_increase_10_percent_time(c, t, 3, 15, time_scaling))
 
 
 ########################################################################################

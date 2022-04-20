@@ -32,7 +32,7 @@ date_time_str = 'results/' + now.strftime("%Y_%m_%d_%H%M") + '/'
 
 # save_directory = date_time_str
 # save_directory = 'results/testing/'
-save_directory = 'results/intact_embryo/'
+save_directory = 'results/study_calcium/D_4_kc_100_lambda_2/'
 if not os.path.isdir(save_directory):
     os.mkdir(save_directory)
     
@@ -43,7 +43,7 @@ code_directory = save_directory + 'code/'
 if not os.path.isdir(code_directory):
     os.mkdir(code_directory)
 
-filenames = ['make_cut.py', 'params.py', 'models.py', 'plot.py']
+filenames = ['intact_embryo.py', 'params.py', 'models.py', 'plot.py']
 for filename in filenames:
     copy2(filename, code_directory + filename)
 
@@ -75,7 +75,6 @@ store_t = t[::sample_rate]
 store_timepoints = len(store_t)
 # print(number_of_timepoints, store_timepoints)
 # print(store_t[-1])
-
 
 ########################################################################################
 """ BEFORE CUT """

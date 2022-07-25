@@ -8,6 +8,23 @@ from mpl_toolkits.axes_grid1 import make_axes_locatable
 # from mpl_toolkits.axes_grid1.colorbar import colorbar
 from copy import copy
 
+def determine_cut_time(a):
+    cut_time = 0
+    while all(a[:,cut_time] >= 0):
+        cut_time += 1
+    return cut_time
+    
+def fill_removed_portion(number_of_cells, cut_time, a_ax, b_ax, c_ax, v_ax, a, a_ymax, b_ymax, c_ymax, v_ymax):
+    x_fill = np.arange(0, number_of_cells, 1)
+    fill_bool = a[:,cut_time] < 0
+    fill_alpha = 0.35
+    a_ax.fill_between(x_fill, a_ymax, where=fill_bool, color="tab:gray", alpha=fill_alpha, step='mid')
+    b_ax.fill_between(x_fill, b_ymax, where=fill_bool, color="tab:gray", alpha=fill_alpha, step='mid')
+    c_ax.fill_between(x_fill, c_ymax, where=fill_bool, color="tab:gray", alpha=fill_alpha, step='mid')
+    v_ax.fill_between(x_fill, v_ymax, where=fill_bool, color="tab:gray", alpha=fill_alpha, step='mid')
+    
+    return a_ax, b_ax, c_ax, v_ax, 
+
 def create_animated_output(number_of_cells, t, a, b, v, c, params, save_directory):
     
     a_over_time = a
@@ -102,6 +119,8 @@ def create_animated_output(number_of_cells, t, a, b, v, c, params, save_director
     ax_b.legend(loc=2)
     ax_c.legend(loc=2)
     ax_v.legend(loc=2)
+    
+    cut_time = determine_cut_time(a)
 
     plt.tight_layout()
 
@@ -120,6 +139,10 @@ def create_animated_output(number_of_cells, t, a, b, v, c, params, save_director
         line_b.set_data(range(number_of_cells), b[:,i])
         line_c.set_data(range(number_of_cells), c[:,i])
         line_v.set_data(range(number_of_cells), v[:,i])
+        
+        if i == cut_time:
+            out = fill_removed_portion(number_of_cells, cut_time, ax_a, ax_b, ax_c, ax_v, a, np.max(a), np.max(b), ant_c_ymax, np.max(v))
+        
         # time_text.set_text('t = ' + "{:.1f}".format(t[i]) +'h')
         time_text.set_text('t = ' + "{:.2f}".format(t[i*sample_rate]) +'h')
         # streak_text.set_text('Streak cells: ' + str(int(streak_count[i])))
@@ -251,6 +274,8 @@ def create_stills_array(time_indices, number_of_cells, t, a, b, v, c, params, fi
     v_ymax = np.max(v)*1.1
     
     anterior_cell = (number_of_cells - 1) / 2
+    
+    cut_time = determine_cut_time(a)
 
     fig = plt.figure(figsize=(8,4))
     
@@ -315,6 +340,9 @@ def create_stills_array(time_indices, number_of_cells, t, a, b, v, c, params, fi
             ax_b.set_yticklabels([])
             ax_c.set_yticklabels([])
             ax_v.set_yticklabels([])
+            
+        if time_idx >= cut_time:
+            out = fill_removed_portion(number_of_cells, cut_time, ax_a, ax_b, ax_c, ax_v, a, np.max(a), np.max(b), np.max(c), np.max(v))
             
         # if col_idx == timepointsN - 1:
         #     ax_a.legend(loc=2)

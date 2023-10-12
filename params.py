@@ -1,5 +1,3 @@
-
-
 params = {
     "c_threshold": 0.01,
     "c_b_threshold": 1,
@@ -8,10 +6,10 @@ params = {
     "gamma_0": 0.3,
     "gamma_c": 0.1,
     "gamma_v": 0.1,
-    "k": 100, # calcium production
+    "k": 500,
     "k_v": 5,
-    "mu": 4, # diffusion constant D
-    "lambda_const": 2, # calcium decay
+    "mu": 50,
+    "lambda_const": 5,
     "lambda_const_v_0": 4,
     "lambda_const_v_b": 0
 }
@@ -48,8 +46,6 @@ params = {
 #     "lambda_const_v_b": 0
 # }
 
-
-
 karen_params = {
     "number_of_cells": 100,
     "c_threshold": 0.01,
@@ -66,3 +62,19 @@ karen_params = {
     "lambda_const_v_0": 2,
     "lambda_const_v_b": 0
 }
+
+# params_unknown = {
+#     "c_threshold": 0.01,
+#     "c_b_threshold": 1,
+#     'v_b_threshold': 1.22,
+#     "rho": 1,
+#     "gamma_0": 0.3,
+#     "gamma_c": 0.1,
+#     "gamma_v": 0.1,
+#     "k": 100, # calcium production
+#     "k_v": 5,
+#     "mu": 4, # diffusion constant D
+#     "lambda_const": 2, # calcium decay
+#     "lambda_const_v_0": 4,
+#     "lambda_const_v_b": 0
+# }

@@ -192,7 +192,7 @@ pickle.dump( v, open(pickle_directory + 'v.p','wb') )
 ########################################################################################
 """ Create animated output """
 
-create_animated_output(number_of_cells_precut, 1, t_relative_to_cut, a, b, v, c, params, save_directory)
+create_animated_output(number_of_cells_precut, t_relative_to_cut, a, b, v, c, params, save_directory)
 
 # concentric_circle_animation(t, a, b, c, v, save_directory)
 

@@ -8,10 +8,15 @@ from mpl_toolkits.axes_grid1 import make_axes_locatable
 # from mpl_toolkits.axes_grid1.colorbar import colorbar
 from copy import copy
 
-def determine_cut_time(a):
-    cut_time = 0
-    while all(a[:,cut_time] >= 0):
-        cut_time += 1
+def determine_cut_time(a):    
+    if np.all(a >= 0):
+        cut_time = 0
+        
+    else:
+        cut_time = 0
+        while all(a[:,cut_time] >= 0):
+            cut_time += 1
+    
     return cut_time
     
 def fill_removed_portion(number_of_cells, cut_time, a_ax, b_ax, c_ax, v_ax, a, a_ymax, b_ymax, c_ymax, v_ymax):

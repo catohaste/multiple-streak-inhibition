@@ -12,7 +12,8 @@ from plot import create_animated_output
 # save_directory = 'results/100cells/'
 # save_directory = 'results/**_asymmetric_cut/remove_35L_24R/'
 # save_directory = 'results/**_intact_embryo/'
-save_directory = 'results/study_calcium/D_50/'
+# save_directory = 'results/study_calcium/D_50/'
+save_directory = 'results/vary_params_2023/D_100/'
 
 number_of_cells = 100
 
@@ -141,5 +142,11 @@ print('95', t_equil_95)
 ########################################################################################
 print("\nTotal calcium in the system at equilibrium")
 print(np.sum(c[:,228]))
+
+
+########################################################################################
+print("\nBMP and Vg1 min and max at end")
+print("BMP ", b[0, -1], b[49, -1], b[50, -1], b[99,-1])
+print("Vg1 ", v[0, -1], v[49, -1], v[50, -1], v[99,-1])
 
 

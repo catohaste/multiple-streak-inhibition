@@ -11,7 +11,7 @@ params = {
     "mu": 50,                   # diffusion rate (D in paper)
     "lambda_const": 5,          # calcium act. decay (lambda in paper)
     "lambda_const_v_0": 4,      # Vg1 decay (mu in paper)
-    "lambda_const_v_b": 0       # Vg1 decay dependent on BMP level (not used)
+    "lambda_const_v_b": 0       # Vg1 decay dependent on BMP level (not used in paper, set to 0)
 }
 
 # params_save_2022_04_18 = {

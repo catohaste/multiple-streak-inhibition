@@ -155,7 +155,7 @@ def create_animated_output(number_of_cells, t, a, b, v, c, params, save_director
 
     anim = FuncAnimation(fig, animate, init_func=init, frames=number_of_frames, blit=False)
 
-    anim.save(save_directory + 'hello.mp4', writer='ffmpeg', fps=10)
+    anim.save(save_directory + '.mp4', writer='ffmpeg', fps=10)
     
     return
     

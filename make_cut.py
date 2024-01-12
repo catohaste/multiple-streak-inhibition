@@ -31,8 +31,9 @@ now = datetime.now()
 date_time_str = 'results/' + now.strftime("%Y_%m_%d_%H%M") + '/'
 
 # save_directory = date_time_str
-save_directory = 'results/testing/'
+# save_directory = 'results/testing/'
 # save_directory = 'results/**_asymmetric_cut/remove_35L_24R/'
+save_directory = 'results/vary_params_2023/standard_cut/'
 if not os.path.isdir(save_directory):
     os.mkdir(save_directory)
     
@@ -192,7 +193,7 @@ pickle.dump( v, open(pickle_directory + 'v.p','wb') )
 ########################################################################################
 """ Create animated output """
 
-create_animated_output(number_of_cells_precut, t_relative_to_cut, a, b, v, c, params, save_directory)
+create_animated_output(number_of_cells_precut, t_relative_to_cut, a, b, v, c, params, save_directory + 'cut')
 
 # concentric_circle_animation(t, a, b, c, v, save_directory)
 

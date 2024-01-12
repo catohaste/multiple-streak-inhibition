@@ -13,7 +13,7 @@ from plot import create_animated_output
 # save_directory = 'results/**_asymmetric_cut/remove_35L_24R/'
 # save_directory = 'results/**_intact_embryo/'
 # save_directory = 'results/study_calcium/D_50/'
-save_directory = 'results/vary_params_2023/D_100/'
+save_directory = 'results/vary_params_2023/standard_intact/'
 
 number_of_cells = 100
 

@@ -32,7 +32,7 @@ date_time_str = 'results/' + now.strftime("%Y_%m_%d_%H%M") + '/'
 
 # save_directory = date_time_str
 # save_directory = 'results/testing/'
-save_directory = 'results/study_calcium/D_4_kc_100_lambda_2/'
+save_directory = 'results/vary_params_2023/standard_intact/'
 if not os.path.isdir(save_directory):
     os.mkdir(save_directory)
     
@@ -57,7 +57,7 @@ sample_rate = 200 # sample_rate of variables when pickling
 
 # number_of_cells = 748
 # dx = 0.0126 # 0.094248 / 7.48
-# dt = 0.0001/64
+# dt = 0.0001/64 # approximately 7.48^2
 # sample_rate = int(200 * 64)
 # params['k'] = params['k'] * 7.48
 
@@ -114,7 +114,7 @@ pickle.dump( v, open(pickle_directory + 'v.p','wb') )
 ########################################################################################
 """ Create animated output """
 
-create_animated_output(number_of_cells, t, a, b, v, c, params, save_directory)
+create_animated_output(number_of_cells, t, a, b, v, c, params, save_directory + 'intact')
 
 # concentric_circle_animation(t, a, b, c, v, save_directory)
 

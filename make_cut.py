@@ -27,13 +27,14 @@ total_start = time.time()
 ########################################################################################
 """ Set run details """
 
+if not os.path.isdir('results'):
+    os.mkdir('results')
+
 now = datetime.now()
 date_time_str = 'results/' + now.strftime("%Y_%m_%d_%H%M") + '/'
 
-# save_directory = date_time_str
-# save_directory = 'results/testing/'
-# save_directory = 'results/**_asymmetric_cut/remove_35L_24R/'
-save_directory = 'results/vary_params_2023/beta_V_1_7/'
+save_directory = date_time_str
+
 if not os.path.isdir(save_directory):
     os.mkdir(save_directory)
     

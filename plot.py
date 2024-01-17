@@ -267,7 +267,7 @@ def create_stills_array(time_indices, number_of_cells, t, a, b, v, c, params, fi
     
     matplotlib.rcParams['font.family'] = 'sans-serif'
     # matplotlib.rcParams['font.sans-serif'] = ['Arial']
-    matplotlib.rcParams['font.sans-serif'] = ['Clear Sans']
+    # matplotlib.rcParams['font.sans-serif'] = ['Clear Sans']
     
     timepointsN = len(time_indices)
 

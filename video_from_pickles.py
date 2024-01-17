@@ -6,7 +6,8 @@ from plot import create_animated_output, create_animated_output_extra_calcium, c
 from params import params
 
 # save_directory = 'results/**_intact_embryo/'
-save_directory = 'results/**_asymmetric_cut/remove_35L_24R/'
+# save_directory = 'results/**_asymmetric_cut/remove_35L_24R/'
+save_directory = 'results/testing/'
 
 number_of_cells = 100
 

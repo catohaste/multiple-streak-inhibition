@@ -5,8 +5,8 @@ from copy import deepcopy
 
 from plot import create_animated_output, create_stills_array
 
-save_directory = 'results/**_asymmetric_cut/remove_35L_24R/'
-# save_directory = 'results/100cells/'
+# save_directory = 'results/**_asymmetric_cut/remove_35L_24R/'
+save_directory = 'results/testing/'
 # save_directory = 'results/symmetric_large_cut/36_remaining/'
 
 number_of_cells = 100

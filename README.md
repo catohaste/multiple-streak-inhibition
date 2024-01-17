@@ -20,5 +20,5 @@ python -m pip install -r requirements.txt
 #### Run files
 ```
 python intact_embryo.py
-python make_cut_.py
+python make_cut.py
 ```

@@ -23,14 +23,29 @@ def fill_removed_portion(number_of_cells, cut_time, a_ax, b_ax, c_ax, v_ax, a, a
     x_fill = np.arange(0, number_of_cells, 1)
     fill_bool = a[:,cut_time] < 0
     fill_alpha = 0.35
-    a_ax.fill_between(x_fill, a_ymax, where=fill_bool, color="tab:gray", alpha=fill_alpha, step='mid')
-    b_ax.fill_between(x_fill, b_ymax, where=fill_bool, color="tab:gray", alpha=fill_alpha, step='mid')
-    c_ax.fill_between(x_fill, c_ymax, where=fill_bool, color="tab:gray", alpha=fill_alpha, step='mid')
-    v_ax.fill_between(x_fill, v_ymax, where=fill_bool, color="tab:gray", alpha=fill_alpha, step='mid')
+    fill_lw = 0
+    a_ax.fill_between(x_fill, a_ymax, where=fill_bool, color="tab:gray", alpha=fill_alpha, step='mid', linewidth=fill_lw)
+    b_ax.fill_between(x_fill, b_ymax, where=fill_bool, color="tab:gray", alpha=fill_alpha, step='mid', linewidth=fill_lw)
+    c_ax.fill_between(x_fill, c_ymax, where=fill_bool, color="tab:gray", alpha=fill_alpha, step='mid', linewidth=fill_lw)
+    v_ax.fill_between(x_fill, v_ymax, where=fill_bool, color="tab:gray", alpha=fill_alpha, step='mid', linewidth=fill_lw)
     
     return a_ax, b_ax, c_ax, v_ax, 
 
 def create_animated_output(number_of_cells, t, a, b, v, c, params, save_directory):
+    
+    # FONT ##################################################################################
+    
+    from matplotlib import font_manager
+    
+    font_dirs = ["/Users/clhastings/Library/Fonts"]  # The path to the custom font file.
+    font_files = font_manager.findSystemFonts(fontpaths=font_dirs)
+
+    for font_file in font_files:
+        font_manager.fontManager.addfont(font_file)
+    
+    matplotlib.rcParams['font.family'] = 'sans-serif'
+    # matplotlib.rcParams['font.sans-serif'] = ['Arial']
+    matplotlib.rcParams['font.sans-serif'] = ['Clear Sans']
     
     a_over_time = a
     
@@ -107,10 +122,12 @@ def create_animated_output(number_of_cells, t, a, b, v, c, params, save_director
     
     threshold_streak_line, = ax_b.plot( [0, number_of_cells - 1],threshold_streak, lw=1, c='C0', linestyle='dashed')
     threshold_vg1_line, = ax_b.plot( [0, number_of_cells - 1], threshold_vg1, lw=1, c='C9', linestyle='dashed')
+    
+    calcium_label = r'Ca$\mathregular{^{2+}}$' + '\nactivity'
 
-    line_a, = ax_a.plot( a_over_time[:,0], lw=3, c='C0', label="'Streak'")
+    line_a, = ax_a.plot( a_over_time[:,0], lw=3, c='C0', label="Streak\nidentity")
     line_b, = ax_b.plot( b[:,0], lw=3, c='C3', label='BMP4')
-    line_c, = ax_c.plot( c[:,0], lw=3, c='C1',label='Ca2+\nactivity')
+    line_c, = ax_c.plot( c[:,0], lw=3, c='C1',label=calcium_label)
     line_v, = ax_v.plot( v[:,0], lw=3, c='C9',label='cVG1')
 
     time_x_loc = number_of_cells/3
@@ -132,9 +149,9 @@ def create_animated_output(number_of_cells, t, a, b, v, c, params, save_director
     # plt.show()
 
     def init():
-        line_a, = ax_a.plot([],[], lw=3, c='C0', label="'Streak'")
+        line_a, = ax_a.plot([],[], lw=3, c='C0', label="Streak\nidentity")
         line_b, = ax_b.plot([],[], lw=3, c='C3', label='BMP4')
-        line_c, = ax_c.plot([],[],lw=3, c='C1',label='Ca2+\nactivity')
+        line_c, = ax_c.plot([],[],lw=3, c='C1',label=calcium_label)
         line_v, = ax_v.plot([],[],lw=3, c='C9',label='cVG1')
         time_text.set_text('t = ')
         # streak_text.set_text('Streak cells: ')
@@ -265,9 +282,45 @@ def create_animated_output_extra_calcium(number_of_cells, sample_rate, t, a, b, 
 
 def create_stills_array(time_indices, number_of_cells, t, a, b, v, c, params, filename):
     
+    # FONT ##################################################################################
+    
+    from matplotlib import font_manager
+    
+    font_dirs = ["/Users/clhastings/Library/Fonts"]  # The path to the custom font file.
+    font_files = font_manager.findSystemFonts(fontpaths=font_dirs)
+
+    for font_file in font_files:
+        font_manager.fontManager.addfont(font_file)
+    
     matplotlib.rcParams['font.family'] = 'sans-serif'
     # matplotlib.rcParams['font.sans-serif'] = ['Arial']
-    # matplotlib.rcParams['font.sans-serif'] = ['Clear Sans']
+    matplotlib.rcParams['font.sans-serif'] = ['Clear Sans']
+    
+    # FONTSIZES #############################################################################
+
+    SMALL_SIZE = 6
+    MEDIUM_SIZE = 8
+    BIGGER_SIZE = 9
+
+    # plt.rc('font', size=SMALL_SIZE)          # controls default text sizes
+    plt.rc('axes', titlesize=BIGGER_SIZE)     # fontsize of the axes title
+    plt.rc('axes', labelsize=MEDIUM_SIZE)    # fontsize of the x and y labels
+    plt.rc('xtick', labelsize=SMALL_SIZE)    # fontsize of the tick labels
+    plt.rc('ytick', labelsize=SMALL_SIZE)    # fontsize of the tick labels
+    # plt.rc('legend', fontsize=SMALL_SIZE)    # legend fontsize
+    # plt.rc('figure', titlesize=BIGGER_SIZE)  # fontsize of the figure title
+    
+    # LINEWIDTHS #########################################################################
+    
+    matplotlib.rcParams['axes.linewidth'] = 0.5
+    centre_lw = 0.5
+    threshold_lw = 0.7
+    var_lw = 1.5
+    # set tick width
+    matplotlib.rcParams['xtick.major.size'] = 2
+    matplotlib.rcParams['xtick.major.width'] = 0.5
+    matplotlib.rcParams['ytick.major.size'] = 2
+    matplotlib.rcParams['ytick.major.width'] = 0.5
     
     timepointsN = len(time_indices)
 
@@ -282,7 +335,7 @@ def create_stills_array(time_indices, number_of_cells, t, a, b, v, c, params, fi
     
     cut_time = determine_cut_time(a)
 
-    fig = plt.figure(figsize=(8,4))
+    fig = plt.figure(figsize=(5.7,2.85))
     
     for col_idx, time_idx in enumerate(time_indices):
 
@@ -309,25 +362,28 @@ def create_stills_array(time_indices, number_of_cells, t, a, b, v, c, params, fi
         ax_c.set_xticklabels(['P', 'A', 'P'])
         
         b_x_min, b_x_max = ax_b.get_xlim()
-
-        ax_c.set_xlabel("Cell position")
+        
+        if col_idx == 2:
+            ax_c.set_xlabel("Cell position")
+        else:
+            ax_c.set_xlabel("")
 
         ant_x = [anterior_cell, anterior_cell]
         thresh_v_b = [params["v_b_threshold"], params["v_b_threshold"]]
         thresh_c_b = [params["c_b_threshold"], params["c_b_threshold"]]
 
-        ant_a, = ax_a.plot( ant_x, [0,np.max(a)], lw=0.5, c='k', linestyle='dashed')
-        ant_b, = ax_b.plot( ant_x, [0,np.max(b)], lw=0.5, c='k', linestyle='dashed')
-        ant_c, = ax_c.plot( ant_x, [0,np.max(c)], lw=0.5, c='k', linestyle='dashed')
-        ant_v, = ax_v.plot( ant_x, [0,np.max(v)], lw=0.5, c='k', linestyle='dashed')
+        ant_a, = ax_a.plot( ant_x, [0,np.max(a)], lw=centre_lw, c='k', linestyle='dashed')
+        ant_b, = ax_b.plot( ant_x, [0,np.max(b)], lw=centre_lw, c='k', linestyle='dashed')
+        ant_c, = ax_c.plot( ant_x, [0,np.max(c)], lw=centre_lw, c='k', linestyle='dashed')
+        ant_v, = ax_v.plot( ant_x, [0,np.max(v)], lw=centre_lw, c='k', linestyle='dashed')
         
-        line_thresh_v_b, = ax_b.plot( [b_x_min,b_x_max], thresh_v_b, lw=1, c='C9', linestyle='dashed')
-        line_thresh_c_b, = ax_b.plot( [b_x_min,b_x_max], thresh_c_b, lw=1, c='C0', linestyle='dashed')
+        line_thresh_v_b, = ax_b.plot( [b_x_min,b_x_max], thresh_v_b, lw=threshold_lw, c='C9', linestyle='dashed')
+        line_thresh_c_b, = ax_b.plot( [b_x_min,b_x_max], thresh_c_b, lw=threshold_lw, c='C0', linestyle='dashed')
 
-        line_a, = ax_a.plot( a[:,time_idx], lw=2, c='C0', label="'Streak'")
-        line_b, = ax_b.plot( b[:,time_idx], lw=2, c='C3', label='cBMP4')
-        line_c, = ax_c.plot( c[:,time_idx], lw=2, c='C1',label='Ca2+')
-        line_v, = ax_v.plot( v[:,time_idx], lw=2, c='C9',label='cVG1')
+        line_a, = ax_a.plot( a[:,time_idx], lw=var_lw, c='C0', label="'Streak'")
+        line_b, = ax_b.plot( b[:,time_idx], lw=var_lw, c='C3', label='cBMP4')
+        line_c, = ax_c.plot( c[:,time_idx], lw=var_lw, c='C1',label='Ca2+')
+        line_v, = ax_v.plot( v[:,time_idx], lw=var_lw, c='C9',label='cVG1')
         
         time_str = str(t[time_idx])
         ax_a.set_title('t = ' + time_str + 'h', fontweight='bold')
@@ -335,9 +391,10 @@ def create_stills_array(time_indices, number_of_cells, t, a, b, v, c, params, fi
         if col_idx == 0:
             ax_a.set_yticklabels(['OFF','ON'])
             
-            ax_a.set_ylabel("'Streak'", fontweight='bold')
+            calcium_text = r'Ca$\mathregular{^{2+}}$' + '\nactivity'
+            ax_a.set_ylabel("Streak\nidentity", fontweight='bold')
             ax_b.set_ylabel('BMP4\n', fontweight='bold')
-            ax_c.set_ylabel('Ca2+\nactivity', fontweight='bold')
+            ax_c.set_ylabel(calcium_text, fontweight='bold')
             ax_v.set_ylabel('cVG1\n', fontweight='bold')
             
         else:

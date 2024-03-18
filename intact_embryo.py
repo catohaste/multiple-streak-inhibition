@@ -107,7 +107,7 @@ pickle_directory = save_directory + 'vars/'
 if not os.path.isdir(pickle_directory):
     os.mkdir(pickle_directory)
     
-pickle.dump( t, open(pickle_directory + 't.p','wb') )
+pickle.dump( store_t, open(pickle_directory + 't.p','wb') )
 pickle.dump( a, open(pickle_directory + 'a.p','wb') )
 pickle.dump( b, open(pickle_directory + 'b.p','wb') )
 pickle.dump( c, open(pickle_directory + 'c.p','wb') )
@@ -116,7 +116,7 @@ pickle.dump( v, open(pickle_directory + 'v.p','wb') )
 ########################################################################################
 """ Create animated output """
 
-create_animated_output(number_of_cells, t, a, b, v, c, params, save_directory + 'intact')
+create_animated_output(number_of_cells, store_t, a, b, v, c, params, save_directory + 'intact')
 
 # concentric_circle_animation(t, a, b, c, v, save_directory)
 

@@ -115,17 +115,17 @@ def create_animated_output(number_of_cells, t, a, b, v, c, params, save_director
     threshold_streak = [params["c_b_threshold"], params["c_b_threshold"]]
     threshold_vg1 = [params["v_b_threshold"], params["v_b_threshold"]]
     
-    ant_a, = ax_a.plot( ant_x, [0,np.max(a)], lw=1, c='k', linestyle='dashed')
-    ant_b, = ax_b.plot( ant_x, [0,np.max(b)], lw=1, c='k', linestyle='dashed')
-    ant_c, = ax_c.plot( ant_x, [0,ant_c_ymax], lw=1, c='k', linestyle='dashed')
-    ant_v, = ax_v.plot( ant_x, [0,np.max(v)], lw=1, c='k', linestyle='dashed')
+    ant_a, = ax_a.plot( ant_x, [0,np.max(a)], lw=1, c='k', linestyle='dotted')
+    ant_b, = ax_b.plot( ant_x, [0,np.max(b)], lw=1, c='k', linestyle='dotted')
+    ant_c, = ax_c.plot( ant_x, [0,ant_c_ymax], lw=1, c='k', linestyle='dotted')
+    ant_v, = ax_v.plot( ant_x, [0,np.max(v)], lw=1, c='k', linestyle='dotted')
     
     threshold_streak_line, = ax_b.plot( [0, number_of_cells - 1],threshold_streak, lw=1, c='C0', linestyle='dashed')
-    threshold_vg1_line, = ax_b.plot( [0, number_of_cells - 1], threshold_vg1, lw=1, c='C9', linestyle='dashed')
+    threshold_vg1_line, = ax_b.plot( [0, number_of_cells - 1], threshold_vg1, lw=1, c='C9', linestyle='dashdot')
     
     calcium_label = r'Ca$\mathregular{^{2+}}$' + '\nactivity'
 
-    line_a, = ax_a.plot( a_over_time[:,0], lw=3, c='C0', label="Streak\nidentity")
+    line_a, = ax_a.plot( a_over_time[:,0], lw=3, c='C0', label="'Streak'")
     line_b, = ax_b.plot( b[:,0], lw=3, c='C3', label='BMP4')
     line_c, = ax_c.plot( c[:,0], lw=3, c='C1',label=calcium_label)
     line_v, = ax_v.plot( v[:,0], lw=3, c='C9',label='cVG1')
@@ -149,7 +149,7 @@ def create_animated_output(number_of_cells, t, a, b, v, c, params, save_director
     # plt.show()
 
     def init():
-        line_a, = ax_a.plot([],[], lw=3, c='C0', label="Streak\nidentity")
+        line_a, = ax_a.plot([],[], lw=3, c='C0', label="'Streak'")
         line_b, = ax_b.plot([],[], lw=3, c='C3', label='BMP4')
         line_c, = ax_c.plot([],[],lw=3, c='C1',label=calcium_label)
         line_v, = ax_v.plot([],[],lw=3, c='C9',label='cVG1')
@@ -372,12 +372,12 @@ def create_stills_array(time_indices, number_of_cells, t, a, b, v, c, params, fi
         thresh_v_b = [params["v_b_threshold"], params["v_b_threshold"]]
         thresh_c_b = [params["c_b_threshold"], params["c_b_threshold"]]
 
-        ant_a, = ax_a.plot( ant_x, [0,np.max(a)], lw=centre_lw, c='k', linestyle='dashed')
-        ant_b, = ax_b.plot( ant_x, [0,np.max(b)], lw=centre_lw, c='k', linestyle='dashed')
-        ant_c, = ax_c.plot( ant_x, [0,np.max(c)], lw=centre_lw, c='k', linestyle='dashed')
-        ant_v, = ax_v.plot( ant_x, [0,np.max(v)], lw=centre_lw, c='k', linestyle='dashed')
+        ant_a, = ax_a.plot( ant_x, [0,np.max(a)], lw=centre_lw, c='k', linestyle='dotted')
+        ant_b, = ax_b.plot( ant_x, [0,np.max(b)], lw=centre_lw, c='k', linestyle='dotted')
+        ant_c, = ax_c.plot( ant_x, [0,np.max(c)], lw=centre_lw, c='k', linestyle='dotted')
+        ant_v, = ax_v.plot( ant_x, [0,np.max(v)], lw=centre_lw, c='k', linestyle='dotted')
         
-        line_thresh_v_b, = ax_b.plot( [b_x_min,b_x_max], thresh_v_b, lw=threshold_lw, c='C9', linestyle='dashed')
+        line_thresh_v_b, = ax_b.plot( [b_x_min,b_x_max], thresh_v_b, lw=threshold_lw, c='C9', linestyle='dashdot')
         line_thresh_c_b, = ax_b.plot( [b_x_min,b_x_max], thresh_c_b, lw=threshold_lw, c='C0', linestyle='dashed')
 
         line_a, = ax_a.plot( a[:,time_idx], lw=var_lw, c='C0', label="'Streak'")
@@ -392,7 +392,7 @@ def create_stills_array(time_indices, number_of_cells, t, a, b, v, c, params, fi
             ax_a.set_yticklabels(['OFF','ON'])
             
             calcium_text = r'Ca$\mathregular{^{2+}}$' + '\nactivity'
-            ax_a.set_ylabel("Streak\nidentity", fontweight='bold')
+            ax_a.set_ylabel("'Streak'", fontweight='bold')
             ax_b.set_ylabel('BMP4\n', fontweight='bold')
             ax_c.set_ylabel(calcium_text, fontweight='bold')
             ax_v.set_ylabel('cVG1\n', fontweight='bold')
@@ -414,7 +414,7 @@ def create_stills_array(time_indices, number_of_cells, t, a, b, v, c, params, fi
 
     plt.tight_layout()
     
-    fig.savefig(filename, dpi=300, orientation='portrait', format='png') #, transparent=True)
+    fig.savefig(filename, dpi=600, orientation='portrait', format='png') #, transparent=True)
 
 def create_circle_animation(var, save_directory):
 

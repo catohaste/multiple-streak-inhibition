@@ -13,8 +13,8 @@ from plot import create_animated_output
 # save_directory = 'results/**_asymmetric_cut/remove_35L_24R/'
 # save_directory = 'results/**_intact_embryo/'
 # save_directory = 'results/study_calcium/D_50/'
-save_directory = 'results/vary_params_2023/beta_V_2_19/'
-# save_directory = 'results/vary_params_2023/standard_cut/'
+# save_directory = 'results/vary_params_2023/beta_V_2_19/'
+save_directory = 'results/vary_params_2023/standard_cut/'
 
 number_of_cells = 100
 
@@ -73,6 +73,9 @@ print("Calcium data")
 print("Min max just precut", min(c[:,cut_time_idx-1]), max(c[:,cut_time_idx-1]))
 c_at_end = [c[idx, -1] for idx in idx_cells_after_cut]
 print("Min max end,", min(c_at_end), max(c_at_end))
+
+print('calcium cell 34 35 36 74 75 76', c[34, -1], c[35, -1], c[36, -1], c[74, -1], c[75, -1], c[76, -1])
+
 
 ########################################################################################
 print("")

@@ -14,8 +14,9 @@ from plot import create_animated_output
 # save_directory = 'results/**_intact_embryo/'
 # save_directory = 'results/study_calcium/D_50/'
 save_directory = 'results/vary_params_2023/standard_intact/'
+save_directory = 'results/' + 'number_of_cells/101_intact/'
 
-number_of_cells = 100
+number_of_cells = 101
 
 ########################################################################################
 """ Pickle variables """
@@ -33,6 +34,12 @@ print("Basic time data")
 print(t.shape)
 print(t[0],t[-1])
 print("")
+
+########################################################################################
+print("\nTotal number of streak cells at end")
+print(a[:,-1])
+print(len(a[:,-1]))
+print(sum(a[:,-1]))
 
 ########################################################################################
 print("Basic calcium data")
@@ -149,5 +156,4 @@ print(np.sum(c[:,228]))
 print("\nBMP and Vg1 min and max at end")
 print("BMP ", b[0, -1], b[49, -1], b[50, -1], b[99,-1])
 print("Vg1 ", v[0, -1], v[49, -1], v[50, -1], v[99,-1])
-
 

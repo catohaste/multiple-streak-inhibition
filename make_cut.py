@@ -115,7 +115,7 @@ v0 = np.zeros((number_of_cells_precut), dtype=float)
 b0 = np.zeros((number_of_cells_precut), dtype=float)
 b_min = 1.1
 b_max = 2.2
-for i in range(int(number_of_cells_precut/2)):
+for i in range(int((number_of_cells_precut+1)/2)):
     j = number_of_cells_precut - i - 1
     b0[i] = ((b_max - b_min)/number_of_cells_precut) * 2 * i + b_min
     b0[j] = ((b_max - b_min)/number_of_cells_precut) * 2 * i + b_min

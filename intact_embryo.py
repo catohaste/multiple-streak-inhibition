@@ -93,6 +93,13 @@ for i in range(int((number_of_cells+1)/2)):
     b0[i] = ((b_max - b_min)/number_of_cells) * 2 * i + b_min
     b0[j] = ((b_max - b_min)/number_of_cells) * 2 * i + b_min
 
+# rotated initial conditions, only one 'posterior cell'
+# b0[0] = b_min
+# for i in range(1, int(number_of_cells/2) + 1):
+#     j = number_of_cells - i
+#     b0[i] = ((b_max - b_min)/number_of_cells) * 2 * i + b_min
+#     b0[j] = ((b_max - b_min)/number_of_cells) * 2 * i + b_min
+
 start = time.time()
 
 a, b, c, v = solve_ivp_odes(number_of_cells, number_of_timepoints, dt, dx, a0, b0, c0, v0, calcium_periodic_boundary, params, sample_rate)

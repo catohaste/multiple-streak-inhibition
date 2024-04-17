@@ -119,6 +119,13 @@ for i in range(int((number_of_cells_precut+1)/2)):
     j = number_of_cells_precut - i - 1
     b0[i] = ((b_max - b_min)/number_of_cells_precut) * 2 * i + b_min
     b0[j] = ((b_max - b_min)/number_of_cells_precut) * 2 * i + b_min
+    
+# rotated initial conditions, only one 'posterior cell'
+# b0[0] = b_min
+# for i in range(1, int(number_of_cells_precut/2) + 1):
+#     j = number_of_cells_precut - i
+#     b0[i] = ((b_max - b_min)/number_of_cells_precut) * 2 * i + b_min
+#     b0[j] = ((b_max - b_min)/number_of_cells_precut) * 2 * i + b_min
 
 start = time.time()
 

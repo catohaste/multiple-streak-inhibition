@@ -11,7 +11,7 @@ from copy import deepcopy
 import pickle
 from shutil import copy2
 
-from models import solve_ivp_odes, calcium_periodic_boundary, calcium_no_flux_boundary
+from models import solve_ivp_odes, solve_ivp_odes_Hill, calcium_periodic_boundary, calcium_no_flux_boundary
 
 from plot import create_animated_output
 
@@ -103,6 +103,7 @@ for i in range(int((number_of_cells+1)/2)):
 start = time.time()
 
 a, b, c, v = solve_ivp_odes(number_of_cells, number_of_timepoints, dt, dx, a0, b0, c0, v0, calcium_periodic_boundary, params, sample_rate)
+# a, b, c, v = solve_ivp_odes_Hill(number_of_cells, number_of_timepoints, dt, dx, a0, b0, c0, v0, calcium_periodic_boundary, params, sample_rate)
 
 end = time.time()
 print("Time consumed solving: ",end - start)

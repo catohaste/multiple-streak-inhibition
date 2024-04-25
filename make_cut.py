@@ -11,7 +11,7 @@ from copy import deepcopy
 import pickle
 from shutil import copy2
 
-from models import solve_ivp_odes, calcium_periodic_boundary, calcium_no_flux_boundary
+from models import solve_ivp_odes, solve_ivp_odes_Hill, calcium_periodic_boundary, calcium_no_flux_boundary
 
 from plot import create_animated_output
 
@@ -130,6 +130,7 @@ for i in range(int((number_of_cells_precut+1)/2)):
 start = time.time()
 
 a_precut, b_precut, c_precut, v_precut = solve_ivp_odes(number_of_cells_precut, number_of_timepoints_precut, dt, dx, a0, b0, c0, v0, calcium_periodic_boundary, params, sample_rate)
+# a_precut, b_precut, c_precut, v_precut = solve_ivp_odes_Hill(number_of_cells_precut, number_of_timepoints_precut, dt, dx, a0, b0, c0, v0, calcium_periodic_boundary, params, sample_rate)
 
 end = time.time()
 print("Time consumed solving precut: ",end - start)
@@ -152,6 +153,7 @@ start = time.time()
 
 # "short" refers to number of cells present. arrays do not include cells removed at cut
 a_postcut_short, b_postcut_short, c_postcut_short, v_postcut_short = solve_ivp_odes(number_of_cells_postcut, number_of_timepoints_postcut, dt, dx, a_atcut, b_atcut, c_atcut, v_atcut, calcium_no_flux_boundary, params, sample_rate)
+# a_postcut_short, b_postcut_short, c_postcut_short, v_postcut_short = solve_ivp_odes_Hill(number_of_cells_postcut, number_of_timepoints_postcut, dt, dx, a_atcut, b_atcut, c_atcut, v_atcut, calcium_no_flux_boundary, params, sample_rate)
 
 end = time.time()
 print("Time consumed solving postcut: ",end - start)

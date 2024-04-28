@@ -3,7 +3,7 @@ Solving a system of ODEs to model interactions preventing the formation of multi
 
 ## Quickstart
 
-Code has been tested with Python 3.9.13. Please note that the creation of the animated output requires `ffmpeg` to be installed, which can be found [here](https://ffmpeg.org/).
+Code has been tested with Python 3.12.2. Please note that the creation of the animated output requires `ffmpeg` to be installed, which can be found at the [FFmpeg website](https://ffmpeg.org/).
 
 #### Download code
 ```

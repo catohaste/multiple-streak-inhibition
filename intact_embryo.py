@@ -11,7 +11,7 @@ from copy import deepcopy
 import pickle
 from shutil import copy2
 
-from models import solve_ivp_odes, solve_ivp_odes_Hill, calcium_periodic_boundary, calcium_no_flux_boundary
+from models import solve_ivp_odes, solve_ivp_odes_Hill, calcium_periodic_boundary, calcium_no_flux_boundary, solve_ivp_odes_cvg1_source
 
 from plot import create_animated_output
 
@@ -92,6 +92,13 @@ for i in range(int((number_of_cells+1)/2)):
     j = number_of_cells - i - 1
     b0[i] = ((b_max - b_min)/number_of_cells) * 2 * i + b_min
     b0[j] = ((b_max - b_min)/number_of_cells) * 2 * i + b_min
+    
+# model cVG1 with the placement of a bead in the anterior
+params['v_source_magnitude'] = 12
+params['v_source_location'] = 24
+
+# initiate with steady state level of cVG1
+v0[params['v_source_location']] =  params['v_source_magnitude'] / params['lambda_const_v_0']
 
 # rotated initial conditions, only one 'posterior cell'
 # b0[0] = b_min
@@ -102,7 +109,8 @@ for i in range(int((number_of_cells+1)/2)):
 
 start = time.time()
 
-a, b, c, v = solve_ivp_odes(number_of_cells, number_of_timepoints, dt, dx, a0, b0, c0, v0, calcium_periodic_boundary, params, sample_rate)
+a, b, c, v = solve_ivp_odes_cvg1_source(number_of_cells, number_of_timepoints, dt, dx, a0, b0, c0, v0, calcium_periodic_boundary, params, sample_rate)
+# a, b, c, v = solve_ivp_odes(number_of_cells, number_of_timepoints, dt, dx, a0, b0, c0, v0, calcium_periodic_boundary, params, sample_rate)
 # a, b, c, v = solve_ivp_odes_Hill(number_of_cells, number_of_timepoints, dt, dx, a0, b0, c0, v0, calcium_periodic_boundary, params, sample_rate)
 
 end = time.time()

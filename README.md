@@ -1,5 +1,11 @@
 # multiple-streak-inhibition
-Solving a system of ODEs to model interactions preventing the formation of multiple streaks
+Solving a system of ordinary differential equations to model interactions preventing the formation of multiple primitive streaks in developing chick embryos.
+
+## Introduction
+
+This software models interactions between a streak-inducer, a streak-inhibitor and calcium activity in a ring of cells during chick embryonic development. The interactions result in the initiation of primitive streak formation in biologically realistic positions and over relevant timescales. The dynamics are studied in an intact embryo and in an isolated anterior half. A representation of the latter is shown below.
+
+https://github.com/user-attachments/assets/ba1ae332-57f2-49c6-98c2-76c674605bdd
 
 ## Quickstart
 
